@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { getDashboard, getCompany } from '../../../../services/api';
-import { MessageSquare, Wrench, FolderOpen, Package, Bell, ArrowRight, Users } from 'lucide-react';
+import { MessageSquare, FolderOpen, BookOpen, Bell, ArrowRight, Users, Handshake, Image, User } from 'lucide-react';
 
 export default function AdminDashboard() {
   const { data: stats, isLoading } = useQuery({ queryKey: ['dashboard'], queryFn: getDashboard });
@@ -13,18 +13,18 @@ export default function AdminDashboard() {
 
   const cards = [
     { label: 'Liên hệ mới', value: stats?.newContacts, total: stats?.contacts, icon: Bell, color: '#FF6B00', bg: 'rgba(255,107,0,0.1)', border: 'rgba(255,107,0,0.3)', link: '/admin/contacts' },
-    { label: 'Dịch vụ', value: stats?.services, icon: Wrench, color: '#3B82F6', bg: 'rgba(59,130,246,0.1)', border: 'rgba(59,130,246,0.3)', link: '/admin/services' },
     { label: 'Dự án', value: stats?.projects, icon: FolderOpen, color: '#22C55E', bg: 'rgba(34,197,94,0.1)', border: 'rgba(34,197,94,0.3)', link: '/admin/projects' },
-    { label: 'Sản phẩm', value: stats?.products, icon: Package, color: '#A855F7', bg: 'rgba(168,85,247,0.1)', border: 'rgba(168,85,247,0.3)', link: '/admin/products' },
+    { label: 'Tài liệu', value: stats?.courses || stats?.products, icon: BookOpen, color: '#A855F7', bg: 'rgba(168,85,247,0.1)', border: 'rgba(168,85,247,0.3)', link: '/admin/courses' },
+    { label: 'Đối tác', value: stats?.partners, icon: Handshake, color: '#3B82F6', bg: 'rgba(59,130,246,0.1)', border: 'rgba(59,130,246,0.3)', link: '/admin/partners' },
     { label: 'Người dùng', value: stats?.users, icon: Users, color: '#06B6D4', bg: 'rgba(6,182,212,0.1)', border: 'rgba(6,182,212,0.3)', link: '/admin/users' },
   ];
 
   const quickLinks = [
-    { to: '/admin/banners', label: 'Quản lý Banner', desc: 'Thêm/sửa/xóa banner trang chủ' },
-    { to: '/admin/services', label: 'Quản lý Dịch vụ', desc: 'CRUD dịch vụ công ty' },
-    { to: '/admin/projects', label: 'Quản lý Dự án', desc: 'Thêm dự án, quản lý NDA' },
-    { to: '/admin/products', label: 'Quản lý Sản phẩm', desc: 'Sản phẩm và catalog' },
+    { to: '/admin/banners', label: 'Quản lý Nội dung', desc: 'Thêm/sửa/xóa banner trang chủ' },
     { to: '/admin/company', label: 'Thông tin Cá nhân', desc: 'Chỉnh sửa nội dung giới thiệu' },
+    { to: '/admin/projects', label: 'Quản lý Dự án', desc: 'Thêm dự án, quản lý NDA' },
+    { to: '/admin/courses', label: 'Quản lý Tài liệu', desc: 'Kho tài liệu và catalog' },
+    { to: '/admin/partners', label: 'Quản lý Đối tác', desc: 'Danh sách đối tác & thương hiệu' },
     { to: '/admin/contacts', label: 'Hòm thư Liên hệ', desc: 'Xem và xử lý form liên hệ' },
     { to: '/admin/users', label: 'Người dùng', desc: 'Quản lý tài khoản đã đăng ký' },
   ];

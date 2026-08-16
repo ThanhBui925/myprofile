@@ -20,10 +20,10 @@ export default function ProjectDetailPage() {
   return (
     <div>
       {/* Hero */}
-      <div style={{ background: 'linear-gradient(135deg, #0A0A0A, #1A0800)', padding: '6rem 0 4rem', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ background: 'linear-gradient(135deg, #0A0A0A, #1A0800)', padding: 'calc(var(--nav-height) + 2.5rem) 0 4rem', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', right: '-5%', top: '20%', width: 400, height: 400, background: 'var(--color-primary)', filter: 'blur(120px)', opacity: 0.08, borderRadius: '50%' }} />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <Link href="/projects" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', fontSize: '0.875rem', marginBottom: '1.5rem', transition: 'color 0.2s' }}>
+          <Link href="/projects" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', fontSize: '0.875rem', marginTop: '0.5rem', marginBottom: '1.5rem', transition: 'color 0.2s' }}>
             <ArrowLeft size={16} /> {t('common.back')}
           </Link>
           <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.25rem', flexWrap: 'wrap' }}>

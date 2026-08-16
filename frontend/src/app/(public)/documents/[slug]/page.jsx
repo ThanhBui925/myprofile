@@ -93,10 +93,10 @@ export default function DocumentDetailPage() {
 
   return (
     <div>
-      <div style={{ background: 'linear-gradient(135deg, #0A0A0A, #1A0800)', padding: '4rem 0 0', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ background: 'linear-gradient(135deg, #0A0A0A, #1A0800)', padding: 'calc(var(--nav-height) + 2.5rem) 0 0', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', right: 0, top: 0, width: 400, height: 400, background: 'var(--color-primary)', filter: 'blur(120px)', opacity: 0.07, borderRadius: '50%' }} />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <Link href="/documents" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', fontSize: '0.875rem', marginBottom: '2rem', transition: 'color 0.2s' }}>
+          <Link href="/documents" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', fontSize: '0.875rem', marginTop: '0.5rem', marginBottom: '2rem', transition: 'color 0.2s' }}>
             <ArrowLeft size={16} /> {t('common.back')}
           </Link>
           <div className="grid-split-2" style={{ gap: '4rem', paddingBottom: '5rem' }}>

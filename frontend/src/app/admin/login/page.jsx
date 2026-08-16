@@ -179,20 +179,7 @@ export default function AdminLoginPage() {
           </button>
         </form>
 
-        {/* Default credentials hint */}
-        <div style={{
-          marginTop: '1.75rem',
-          padding: '0.875rem 1rem',
-          background: 'rgba(255,107,0,0.06)',
-          border: '1px solid rgba(255,107,0,0.15)',
-          borderRadius: 'var(--radius-md)',
-          fontSize: '0.78rem',
-          color: 'var(--color-text-muted)',
-          lineHeight: 1.6,
-        }}>
-          <strong style={{ color: 'var(--color-primary)' }}>Demo Account:</strong> <br/>
-              <span style={{ color: '#fff', fontWeight: 600 }}>admin</span> / <span style={{ color: '#fff', fontWeight: 600 }}>Thanh2001@</span>
-        </div>
+
 
         <style>{`
           @keyframes spin { to { transform: rotate(360deg); } }
