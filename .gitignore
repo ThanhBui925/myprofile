@@ -22,11 +22,22 @@ build/
 out/
 **/out/
 
-# Uploaded files
+# Uploaded files & Media
 backend/uploads/images/*
 backend/uploads/catalogs/*
+backend/uploads/videos/*
 !backend/uploads/images/.gitkeep
 !backend/uploads/catalogs/.gitkeep
+!backend/uploads/videos/.gitkeep
+
+# Video files
+*.mp4
+*.webm
+*.avi
+*.mov
+*.mkv
+*.wmv
+*.flv
 
 # Logs
 *.log
