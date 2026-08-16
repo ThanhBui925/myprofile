@@ -1,0 +1,204 @@
+header.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  padding: 0 1rem;
+  transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  border-bottom: 1px solid transparent;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+header.navbar.navbar--scrolled {
+  background: rgba(10, 10, 10, 0.92) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid var(--color-border-muted) !important;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.5) !important;
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-height);
+}
+
+/* Logo */
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  text-decoration: none;
+}
+
+.navbar__logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1rem;
+  color: #fff;
+  box-shadow: var(--shadow-glow-sm);
+}
+
+.navbar__logo-text {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: 0.05em;
+}
+
+.navbar__logo-text span {
+  color: var(--color-primary);
+}
+
+/* Desktop Nav */
+.navbar__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.navbar__link {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #ffffff !important;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.navbar__link:hover {
+  color: var(--color-primary) !important;
+  background: rgba(255, 107, 0, 0.1);
+}
+
+.navbar__link--active {
+  color: var(--color-primary) !important;
+  background: rgba(255, 107, 0, 0.18) !important;
+}
+
+/* Actions */
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navbar__lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.875rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--color-border-muted);
+  border-radius: var(--radius-full);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.navbar__lang-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.navbar__menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--color-border-muted);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+/* Mobile Menu */
+.navbar__mobile {
+  display: none;
+  flex-direction: column;
+  background: var(--color-bg-2);
+  border-top: none;
+  padding: 0;
+  gap: 0.25rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: all var(--transition-md);
+}
+
+.navbar__mobile--open {
+  max-height: 400px;
+  padding: 1rem;
+  border-top: 1px solid var(--color-border-muted);
+}
+
+.navbar__mobile-link {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.navbar__mobile-link:hover, .navbar__mobile-link--active {
+  color: var(--color-primary);
+  background: var(--color-primary-glow);
+}
+
+.navbar__mobile-lang {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border-muted);
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 900px) {
+  .navbar__nav { display: none; }
+  .navbar__menu-btn { display: flex; }
+  .navbar__mobile { display: flex; }
+  .navbar__actions .btn:not(.navbar__lang-btn) { display: none; }
+  
+  /* Make logo smaller on mobile/tablet */
+  .navbar__logo {
+    gap: 0.4rem;
+  }
+  .navbar__logo-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 0.95rem;
+    border-radius: 6px;
+  }
+  .navbar__logo-text {
+    font-size: 1.1rem;
+  }
+  
+  /* Make header elements more compact */
+  .navbar__actions {
+    gap: 0.5rem;
+  }
+  .navbar__lang-btn {
+    padding: 0.35rem 0.6rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar__username {
+    display: none !important;
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "eratech-automation-company",
+  "version": "1.0.0",
+  "description": "ERATECH Automation Company Website",
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "seed": "cd backend && npm run seed",
+    "dev": "start \"ERATECH Backend\" cmd /k \"cd backend && npm run dev\" && start \"ERATECH Frontend\" cmd /k \"cd frontend && npm run dev\""
+  },
+  "private": true,
+  "dependencies": {
+    "mongodb": "^7.2.0"
+  }
+}
