@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -13,7 +13,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { userLogin, userGoogleLogin, getCompany } from '../../../services/api';
 import { useUserStore } from '../../../store/userStore';
 
-export default function UserLoginPage() {
+function UserLoginForm() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -60,8 +60,6 @@ export default function UserLoginPage() {
       toast.error(t('auth.google_login_failed') || 'Google login failed');
     },
   });
-
-
 
   return (
     <div style={{
@@ -234,5 +232,13 @@ export default function UserLoginPage() {
         </motion.div>
       </div>
     </div>
+  );
+}
+
+export default function UserLoginPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: '10rem 0', textAlign: 'center', color: 'var(--color-text-muted)' }}>Loading...</div>}>
+      <UserLoginForm />
+    </Suspense>
   );
 }

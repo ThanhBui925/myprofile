@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -12,7 +12,7 @@ import { ArrowLeft, Download, Send, X, BookOpen, Lock } from 'lucide-react';
 import { getCourseBySlug, submitCourseQuote } from '../../../../services/api';
 import { useUserStore } from '../../../../store/userStore';
 
-export default function DocumentDetailPage() {
+function DocumentDetailContent() {
   const { slug } = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -207,5 +207,13 @@ export default function DocumentDetailPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function DocumentDetailPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: '10rem 0', textAlign: 'center', color: 'var(--color-text-muted)' }}>Loading...</div>}>
+      <DocumentDetailContent />
+    </Suspense>
   );
 }
