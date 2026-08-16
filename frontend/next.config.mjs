@@ -2,7 +2,7 @@
 const nextConfig = {
   // Proxy API and uploads to Express backend
   async rewrites() {
-    const backendUrl = process.env.NEXT_PUBLIC_UPLOAD_URL || 'http://localhost:5000';
+    const backendUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
     return [
       {
         source: '/api/:path*',
@@ -17,7 +17,8 @@ const nextConfig = {
   // Allow images from backend based on ENV
   images: {
     remotePatterns: (() => {
-      const backendUrlStr = process.env.NEXT_PUBLIC_UPLOAD_URL || 'http://localhost:5000';
+      const backendUrlStr = process.env.NEXT_PUBLIC_UPLOAD_URL;
+      if (!backendUrlStr) return [];
       try {
         const url = new URL(backendUrlStr);
         return [{
@@ -26,7 +27,7 @@ const nextConfig = {
           port: url.port || '',
         }];
       } catch (e) {
-        return [{ protocol: 'http', hostname: 'localhost', port: '5000' }];
+        return [];
       }
     })(),
   },

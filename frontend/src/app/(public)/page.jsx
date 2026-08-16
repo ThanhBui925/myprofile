@@ -102,7 +102,9 @@ export default function HomePage() {
     }
   });
 
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
+    setMounted(true);
     if (user) {
       reset({ name: user.fullName || user.name || '', email: user.email || '', phone: user.phone || '' });
     }
@@ -320,7 +322,9 @@ export default function HomePage() {
               </div>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-              {user ? (
+              {(!mounted) ? (
+                <div style={{ height: 400, background: 'var(--color-surface)', borderRadius: 'var(--radius-xl)' }} />
+              ) : user ? (
                 <form
                   onSubmit={handleSubmit(data => mutation.mutate(data))}
                   style={{

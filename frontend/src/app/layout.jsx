@@ -4,7 +4,7 @@ import '../App.css';
 
 export async function generateMetadata() {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const res = await fetch(`${apiUrl}/company`, { next: { revalidate: 60 } });
     if (res.ok) {
       const data = await res.json();

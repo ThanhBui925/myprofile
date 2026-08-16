@@ -9,7 +9,7 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: function(origin, callback) {
-    const allowed = [process.env.CLIENT_URL, 'http://localhost:5173', 'http://localhost:3000'];
+    const allowed = [process.env.CLIENT_URL];
     if (!origin || allowed.includes(origin)) return callback(null, true);
     callback(null, true); // Allow all during dev to avoid issues
   },
@@ -67,7 +67,7 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('✅ MongoDB connected');
     app.listen(PORT, () => {
-      console.log(`🚀 ${process.env.APP_NAME || 'THANHTDH'} API running on http://localhost:${PORT}`);
+      console.log(`🚀 ${process.env.APP_NAME || 'THANHTDH'} API running on port ${PORT}`);
     });
   })
   .catch(err => {

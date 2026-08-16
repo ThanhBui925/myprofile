@@ -81,7 +81,7 @@ router.post('/:slug/quote', optionalUserAuth, async (req, res, next) => {
     if (course.driveUrl && req.body.email) {
       (async () => {
         try {
-          const hostUrl = process.env.BACKEND_URL || 'http://localhost:5000';
+          const hostUrl = process.env.BACKEND_URL;
           const trackingUrl = `${hostUrl}/api/courses/track-download/${contact.downloadToken || contact._id}`;
 
           const mailRes = await sendDocumentEmail({
@@ -127,7 +127,7 @@ router.get('/track-download/:token', async (req, res, next) => {
       contact = await Contact.findById(token);
     }
 
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+    const clientUrl = process.env.CLIENT_URL;
 
     if (!contact) {
       return res.status(404).send(`
