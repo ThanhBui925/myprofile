@@ -99,7 +99,7 @@ function DocumentDetailContent() {
           <Link href="/documents" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', fontSize: '0.875rem', marginTop: '0.5rem', marginBottom: '2rem', transition: 'color 0.2s' }}>
             <ArrowLeft size={16} /> {t('common.back')}
           </Link>
-          <div className="grid-split-2" style={{ gap: '4rem', paddingBottom: '5rem' }}>
+          <div className="grid-split-2" style={{ gap: 'clamp(2rem, 5vw, 4rem)', paddingBottom: 'clamp(3rem, 6vw, 5rem)' }}>
             {/* Images */}
             <div>
               <div style={{ aspectRatio: '1', background: 'var(--color-surface)', borderRadius: 'var(--radius-xl)', overflow: 'hidden', marginBottom: '1rem', border: '1px solid var(--color-border-muted)' }}>
@@ -139,7 +139,7 @@ function DocumentDetailContent() {
                   {!isAuthenticated && <Lock size={16} />} <Send size={16} /> {t('courses.quote')}
                 </button>
                 {course.catalogUrl && (
-                  <a href={`/uploads/catalogs/${course.catalogUrl}`} download className="btn btn-outline btn-lg">
+                  <a href={course.catalogUrl.startsWith('http') ? course.catalogUrl : `/uploads/catalogs/${course.catalogUrl}`} target="_blank" rel="noreferrer" download className="btn btn-outline btn-lg">
                     <Download size={16} /> {t('courses.download')}
                   </a>
                 )}
@@ -175,7 +175,7 @@ function DocumentDetailContent() {
       {/* Quote Modal */}
       {showQuote && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', backdropFilter: 'blur(8px)' }}>
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', padding: '2.5rem', width: '100%', maxWidth: 480, position: 'relative', maxHeight: '90vh', overflowY: 'auto' }}>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', padding: 'clamp(1.5rem, 4vw, 2.5rem)', width: '100%', maxWidth: 480, position: 'relative', maxHeight: '90vh', overflowY: 'auto' }}>
             <button onClick={() => setShowQuote(false)} style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: '50%', width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--color-text-muted)' }}><X size={18} /></button>
             <h3 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.75rem' }}>{t('courses.quote')}</h3>
             <form onSubmit={handleSubmit(d => mutation.mutate(d))} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

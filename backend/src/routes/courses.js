@@ -81,7 +81,7 @@ router.post('/:slug/quote', optionalUserAuth, async (req, res, next) => {
     if (course.driveUrl && req.body.email) {
       (async () => {
         try {
-          const hostUrl = process.env.BACKEND_URL;
+          const hostUrl = process.env.BACKEND_URL || 'https://api.thanhbuitdh.com';
           const trackingUrl = `${hostUrl}/api/courses/track-download/${contact.downloadToken || contact._id}`;
 
           const mailRes = await sendDocumentEmail({

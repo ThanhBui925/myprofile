@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { Plus, Pencil, Trash2, X, Upload, PlusCircle, MinusCircle, ToggleLeft, ToggleRight } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Upload, PlusCircle, MinusCircle, EyeOff, Eye } from 'lucide-react';
 import { adminGetCourses, adminCreateCourse, adminUpdateCourse, adminDeleteCourse, uploadFile, uploadMultiple } from '../../../../services/api';
 
-function CourseModal({ course, onClose, onSave }) {
+function CourseModal({ course, onClose, onSave, onDelete }) {
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: course ? {
       nameVi: course.nameVi, nameEn: course.nameEn,
@@ -62,16 +62,16 @@ function CourseModal({ course, onClose, onSave }) {
         <button onClick={onClose} style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: '50%', width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--color-text-muted)' }}><X size={16} /></button>
         <h3 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.75rem' }}>{course ? 'Sửa Tài liệu' : 'Thêm Tài liệu'}</h3>
         <form onSubmit={handleSubmit(d => onSave({ ...d, specifications: specs, images, catalogUrl: catalogName, order: Number(d.order) }))} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="grid-split-2" style={{ gap: '1rem' }}>
             <div className="form-group"><label className="form-label">Tên tài liệu (VI) *</label><input {...register('nameVi', { required: true })} className="form-input" />{errors.nameVi && <span className="form-error">Bắt buộc</span>}</div>
             <div className="form-group"><label className="form-label">Document Name (EN) *</label><input {...register('nameEn', { required: true })} className="form-input" />{errors.nameEn && <span className="form-error">Required</span>}</div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+          <div className="grid-split-2" style={{ gap: '1rem' }}>
             <div className="form-group"><label className="form-label">Danh mục (VI)</label><input {...register('categoryVi')} className="form-input" placeholder="Lập trình PLC" /></div>
             <div className="form-group"><label className="form-label">Category (EN)</label><input {...register('categoryEn')} className="form-input" placeholder="PLC Programming" /></div>
-            <div className="form-group"><label className="form-label">Thứ tự</label><input {...register('order')} type="number" className="form-input" /></div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-group"><label className="form-label">Thứ tự</label><input {...register('order')} type="number" className="form-input" /></div>
+          <div className="grid-split-2" style={{ gap: '1rem' }}>
             <div className="form-group"><label className="form-label">Mô tả (VI)</label><textarea {...register('descriptionVi')} className="form-textarea" rows={3} /></div>
             <div className="form-group"><label className="form-label">Description (EN)</label><textarea {...register('descriptionEn')} className="form-textarea" rows={3} /></div>
           </div>
@@ -149,8 +149,9 @@ function CourseModal({ course, onClose, onSave }) {
           </div>
 
           <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+            {course && <button type="button" onClick={() => { if (confirm('Xoá tài liệu này?')) { onDelete(course._id); onClose(); } }} className="btn btn-sm" style={{ background: 'rgba(239,68,68,0.1)', color: '#EF4444', border: '1px solid rgba(239,68,68,0.3)', }}><Trash2 size={14} /> Xóa</button>}
             <button type="button" onClick={onClose} className="btn btn-ghost">Huỷ</button>
-            <button type="submit" className="btn btn-primary">Lưu Tài liệu</button>
+            <button type="submit" className="btn btn-primary">Lưu</button>
           </div>
         </form>
       </div>
@@ -170,17 +171,17 @@ export default function AdminCourses() {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div><h1 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '0.25rem' }}>Quản lý Tài liệu</h1><p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Danh sách tài liệu tự động hóa</p></div>
         <button onClick={() => setModal('create')} className="btn btn-primary"><Plus size={16} /> Thêm Tài liệu</button>
       </div>
-      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
+      <div className="table-responsive" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
         <table className="admin-table">
           <thead><tr><th>Hình</th><th>Tên tài liệu</th><th>Danh mục</th><th>Chi tiết</th><th>File</th><th>Thứ tự</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
           <tbody>
-            {isLoading && <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>Đang tải...</td></tr>}
+            {isLoading && <tr><td colSpan={8} style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>Đang tải...</td></tr>}
             {courses.map(p => (
-              <tr key={p._id}>
+              <tr key={p._id} onClick={() => setModal(p)} style={{ cursor: 'pointer' }}>
                 <td>{p.images?.[0] ? <img src={`/uploads/images/${p.images[0]}`} alt={p.nameVi} style={{ width: 56, height: 56, objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} /> : <div style={{ width: 56, height: 56, background: 'var(--color-bg-3)', borderRadius: 'var(--radius-sm)' }} />}</td>
                 <td><p style={{ fontWeight: 600, color: '#fff', fontSize: '0.875rem', marginBottom: '0.15rem' }}>{p.nameVi}</p><p style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem' }}>{p.nameEn}</p></td>
                 <td style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>{p.categoryVi || '—'}</td>
@@ -188,8 +189,8 @@ export default function AdminCourses() {
                 <td>{p.catalogUrl ? <span style={{ color: 'var(--color-success)', fontSize: '0.8rem' }}>✓ Có</span> : <span style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>—</span>}</td>
                 <td style={{ color: 'var(--color-text-muted)' }}>{p.order}</td>
                 <td>
-                  <button onClick={() => updateMut.mutate({ id: p._id, data: { isActive: !p.isActive } })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: p.isActive ? 'var(--color-success)' : 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', fontWeight: 600 }}>
-                    {p.isActive ? <><ToggleRight size={20} /> Hiện</> : <><ToggleLeft size={20} /> Ẩn</>}
+                  <button onClick={() => updateMut.mutate({ id: p._id, data: { isActive: !p.isActive } })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: p.isActive ? 'var(--color-success)' : '#EF4444', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', fontWeight: 600 }}>
+                    {p.isActive ? <><Eye size={20} /> Hiện</> : <><EyeOff size={20} /> Ẩn</>}
                   </button>
                 </td>
                 <td><div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -202,7 +203,7 @@ export default function AdminCourses() {
           </tbody>
         </table>
       </div>
-      {modal && <CourseModal course={modal === 'create' ? null : modal} onClose={() => setModal(null)} onSave={handleSave} />}
+      {modal && <CourseModal course={modal === 'create' ? null : modal} onClose={() => setModal(null)} onSave={handleSave} onDelete={(id) => deleteMut.mutate(id)} />}
     </div>
   );
 }

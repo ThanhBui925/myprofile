@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { Plus, Pencil, Trash2, X, Shield, Star, Upload } from 'lucide-react';
 import { adminGetProjects, adminCreateProject, adminUpdateProject, adminDeleteProject, uploadMultiple } from '../../../../services/api';
 
-function ProjectModal({ project, onClose, onSave }) {
+function ProjectModal({ project, onClose, onSave, onDelete }) {
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: project ? {
       titleVi: project.titleVi, titleEn: project.titleEn,
@@ -48,30 +48,30 @@ function ProjectModal({ project, onClose, onSave }) {
         <button onClick={onClose} style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: '50%', width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--color-text-muted)' }}><X size={16} /></button>
         <h3 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.75rem' }}>{project ? 'Sửa Dự án' : 'Thêm Dự án'}</h3>
         <form onSubmit={handleSubmit(handleSubmitForm)} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="grid-split-2" style={{ gap: '1rem' }}>
             <div className="form-group"><label className="form-label">Tên dự án (VI) *</label><input {...register('titleVi', { required: true })} className="form-input" />{errors.titleVi && <span className="form-error">Bắt buộc</span>}</div>
             <div className="form-group"><label className="form-label">Project Title (EN) *</label><input {...register('titleEn', { required: true })} className="form-input" />{errors.titleEn && <span className="form-error">Required</span>}</div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: '1rem' }}>
-            <div className="form-group"><label className="form-label">Khách hàng</label><input {...register('client')} className="form-input" placeholder="Samsung, Vincom..." /></div>
+          <div className="form-group"><label className="form-label">Khách hàng</label><input {...register('client')} className="form-input" placeholder="Samsung, Vincom..." /></div>
+          <div className="grid-split-2" style={{ gap: '1rem' }}>
             <div className="form-group"><label className="form-label">Ngành (VI)</label><input {...register('industryVi')} className="form-input" placeholder="Điện tử" /></div>
             <div className="form-group"><label className="form-label">Industry (EN)</label><input {...register('industryEn')} className="form-input" placeholder="Electronics" /></div>
-            <div className="form-group"><label className="form-label">Thứ tự</label><input {...register('order')} type="number" className="form-input" style={{ width: 80 }} /></div>
           </div>
+          <div className="form-group"><label className="form-label">Thứ tự</label><input {...register('order')} type="number" className="form-input" /></div>
           <div className="form-group"><label className="form-label">Công nghệ (phân cách bằng dấu phẩy)</label><input {...register('technologies')} className="form-input" placeholder="PLC, Robot Integration, Machine Vision" /></div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="grid-split-2" style={{ gap: '1rem' }}>
             <div className="form-group"><label className="form-label">Mô tả (VI)</label><textarea {...register('descriptionVi')} className="form-textarea" rows={3} /></div>
             <div className="form-group"><label className="form-label">Description (EN)</label><textarea {...register('descriptionEn')} className="form-textarea" rows={3} /></div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="grid-split-2" style={{ gap: '1rem' }}>
             <div className="form-group"><label className="form-label">Thách thức (VI)</label><textarea {...register('challengeVi')} className="form-textarea" rows={2} /></div>
             <div className="form-group"><label className="form-label">Challenge (EN)</label><textarea {...register('challengeEn')} className="form-textarea" rows={2} /></div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="grid-split-2" style={{ gap: '1rem' }}>
             <div className="form-group"><label className="form-label">Giải pháp (VI)</label><textarea {...register('solutionVi')} className="form-textarea" rows={2} /></div>
             <div className="form-group"><label className="form-label">Solution (EN)</label><textarea {...register('solutionEn')} className="form-textarea" rows={2} /></div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="grid-split-2" style={{ gap: '1rem' }}>
             <div className="form-group"><label className="form-label">Kết quả (VI)</label><textarea {...register('resultVi')} className="form-textarea" rows={2} /></div>
             <div className="form-group"><label className="form-label">Result (EN)</label><textarea {...register('resultEn')} className="form-textarea" rows={2} /></div>
           </div>
@@ -106,9 +106,12 @@ function ProjectModal({ project, onClose, onSave }) {
               </div>
             )}
           </div>
-          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
-            <button type="button" onClick={onClose} className="btn btn-ghost">Huỷ</button>
-            <button type="submit" className="btn btn-primary">Lưu Dự án</button>
+          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'space-between' }}>
+            {project && <button type="button" onClick={() => { if (confirm('Xoá dự án này?')) { onDelete(project._id); onClose(); } }} className="btn btn-sm" style={{ background: 'rgba(239,68,68,0.1)', color: '#EF4444', border: '1px solid rgba(239,68,68,0.3)' }}><Trash2 size={14} /> Xóa</button>}
+            <div style={{ display: 'flex', gap: '0.75rem', marginLeft: project ? 'auto' : '0' }}>
+              <button type="button" onClick={onClose} className="btn btn-ghost">Huỷ</button>
+              <button type="submit" className="btn btn-primary">Lưu</button>
+            </div>
           </div>
         </form>
       </div>
@@ -128,7 +131,7 @@ export default function AdminProjects() {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div><h1 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '0.25rem' }}>Quản lý Dự án</h1><p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Dự án NDA sẽ bị ẩn khỏi trang công khai</p></div>
         <button onClick={() => setModal('create')} className="btn btn-primary"><Plus size={16} /> Thêm Dự án</button>
       </div>
@@ -138,7 +141,7 @@ export default function AdminProjects() {
           <tbody>
             {isLoading && <tr><td colSpan={5} style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>Đang tải...</td></tr>}
             {projects.map(p => (
-              <tr key={p._id}>
+              <tr key={p._id} onClick={() => setModal(p)} style={{ cursor: 'pointer' }}>
                 <td>
                   <p style={{ fontWeight: 600, color: '#fff', marginBottom: '0.15rem', fontSize: '0.875rem' }}>{p.titleVi}</p>
                   <p style={{ color: 'var(--color-text-muted)', fontSize: '0.78rem' }}>{p.titleEn}</p>
@@ -165,7 +168,7 @@ export default function AdminProjects() {
           </tbody>
         </table>
       </div>
-      {modal && <ProjectModal project={modal === 'create' ? null : modal} onClose={() => setModal(null)} onSave={handleSave} />}
+      {modal && <ProjectModal project={modal === 'create' ? null : modal} onClose={() => setModal(null)} onSave={handleSave} onDelete={(id) => deleteMut.mutate(id)} />}
     </div>
   );
 }

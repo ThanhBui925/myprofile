@@ -397,7 +397,7 @@ export default function ProductsPage() {
                 </button>
                 {detailProduct.catalogUrl && (
                   <a
-                    href={detailProduct.catalogUrl}
+                    href={`/uploads/catalogs/${detailProduct.catalogUrl}`}
                     target="_blank"
                     rel="noreferrer"
                     className="btn"

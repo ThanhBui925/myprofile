@@ -35,11 +35,6 @@ const fs = require('fs');
 // Static files for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes
-app.post('/api/debug-log', (req, res) => {
-  console.log('[CLIENT DEBUG]', req.body);
-  res.sendStatus(200);
-});
 app.use('/api/auth', require('./src/routes/auth'));
 app.use('/api/banners', require('./src/routes/banners'));
 app.use('/api/services', require('./src/routes/services'));

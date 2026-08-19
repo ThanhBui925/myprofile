@@ -1,4 +1,5 @@
 'use client';
+import SubPageHero3D from '../../../components/common/SubPageHero3D';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -34,13 +35,10 @@ export default function ProjectsPage() {
 
   return (
     <div>
-      <div style={{ background: 'linear-gradient(135deg, #0A0A0A, #1A0800)', padding: 'calc(var(--nav-height) + 2.5rem) 0 4rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 400, height: 300, background: 'var(--color-primary)', filter: 'blur(100px)', opacity: 0.08, borderRadius: '50%' }} />
-        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <h1 style={{ fontFamily: 'var(--font-heading)', marginBottom: '0.5rem', color: '#fff' }}>{t('projects.title')}</h1>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem' }}>{lang === 'vi' ? `Các dự án tự động hóa tiêu biểu ${appName} đã triển khai` : `Featured automation projects implemented by ${appName}`}</p>
-        </div>
-      </div>
+      <SubPageHero3D>
+        <h1 style={{ fontFamily: 'var(--font-heading)', marginBottom: '0.5rem', color: '#fff' }}>{t('projects.title')}</h1>
+        <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem' }}>{lang === 'vi' ? `Các dự án tự động hóa tiêu biểu ${appName} đã triển khai` : `Featured automation projects implemented by ${appName}`}</p>
+      </SubPageHero3D>
 
       <div className="section">
         <div className="container">

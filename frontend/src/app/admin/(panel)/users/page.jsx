@@ -3,7 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { Users, ToggleLeft, ToggleRight, Building2, Phone } from 'lucide-react';
+import { Users, EyeOff, Eye, Building2, Phone } from 'lucide-react';
 import { adminGetUsers, adminToggleUser } from '../../../../services/api';
 
 export default function AdminUsers() {
@@ -19,7 +19,7 @@ export default function AdminUsers() {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <h1 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '0.25rem' }}>Quản lý Người dùng</h1>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Danh sách tài khoản đã đăng ký trên hệ thống</p>
@@ -95,8 +95,8 @@ export default function AdminUsers() {
                 </td>
                 <td>
                   <button onClick={() => toggleMut.mutate(user._id)} disabled={toggleMut.isPending}
-                    style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: 'none', border: 'none', cursor: 'pointer', color: user.isActive ? 'var(--color-success)' : 'var(--color-text-muted)', fontSize: '0.8rem', fontWeight: 600 }}>
-                    {user.isActive ? <ToggleRight size={20} /> : <ToggleLeft size={20} />}
+                    style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: 'none', border: 'none', cursor: 'pointer', color: user.isActive ? 'var(--color-success)' : '#EF4444', fontSize: '0.8rem', fontWeight: 600 }}>
+                    {user.isActive ? <Eye size={20} /> : <EyeOff size={20} />}
                     {user.isActive ? 'Hoạt động' : 'Đã khoá'}
                   </button>
                 </td>

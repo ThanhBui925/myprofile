@@ -9,7 +9,7 @@ import { getCompany } from '../../../services/api';
 import { 
   LayoutDashboard, Image, Building2, Wrench, FolderOpen, 
   Package, Users, MessageSquare, LogOut, ChevronRight, Handshake, BookOpen,
-  User
+  User, Menu
 } from 'lucide-react';
 import '../../../components/layout/AdminLayout.css';
 
@@ -35,6 +35,7 @@ export default function AdminPanelLayout({ children }) {
   const appName = company?.nameVi || company?.nameEn || 'THANHTDH';
 
   const [mounted, setMounted] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -42,6 +43,11 @@ export default function AdminPanelLayout({ children }) {
       router.replace('/admin/login');
     }
   }, [isAuthenticated, router]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   // Protect admin routes and fix hydration mismatch
   if (!mounted) return null;
@@ -54,8 +60,30 @@ export default function AdminPanelLayout({ children }) {
 
   return (
     <div className="admin-layout">
+      {/* Mobile Header */}
+      <div className="admin-mobile-header">
+        <div className="admin-mobile-header__brand">
+          <div className="footer__logo-icon" style={{ width: 28, height: 28, fontSize: '0.9rem' }}>
+            <span>{appName[0]?.toUpperCase()}</span>
+          </div>
+          <span>{appName}</span>
+        </div>
+        <button className="admin-mobile-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          <Menu size={24} />
+        </button>
+      </div>
+
+      {/* Sidebar Overlay for Mobile */}
+      {isMobileMenuOpen && (
+        <div 
+          className="admin-sidebar-overlay show"
+          style={{ display: 'block' }}
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="admin-sidebar">
+      <aside className={`admin-sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
         {/* Logo */}
         <div className="admin-sidebar__logo">
           <div className="footer__logo-icon" style={{ width: 32, height: 32, fontSize: '1rem' }}><span>{appName[0]?.toUpperCase()}</span></div>

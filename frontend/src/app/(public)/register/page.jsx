@@ -71,7 +71,7 @@ export default function UserRegisterPage() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '2rem 1rem',
+      padding: 'calc(var(--nav-height) + 2rem) 1rem 2rem',
       background: 'var(--color-bg)',
       position: 'relative',
       overflow: 'hidden',

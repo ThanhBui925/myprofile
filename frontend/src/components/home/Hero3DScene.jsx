@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { getBanners } from '../../services/api';
 import { ArrowRight, Award, CheckCircle2 } from 'lucide-react';
+import './Hero3DScene.css';
 import * as THREE from 'three';
 
 export default function Hero3DScene({ appName = 'THANHTDH', totalProjects = 3, yearsOfExp = 5 }) {
@@ -487,37 +488,23 @@ export default function Hero3DScene({ appName = 'THANHTDH', totalProjects = 3, y
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '2rem',
-            flexWrap: 'wrap',
-            padding: '1rem 2.25rem',
-            background: 'rgba(20, 20, 20, 0.65)',
-            border: '1px solid var(--color-border-muted)',
-            borderRadius: 'var(--radius-full)',
-            backdropFilter: 'blur(20px)',
-            maxWidth: '500px',
-            margin: '0 auto',
-            boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
-          }}
+          className="hero-stats-container"
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
             <Award size={20} color="var(--color-primary)" />
             <div style={{ textAlign: 'left' }}>
-              <span style={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem', display: 'block', lineHeight: 1.1 }}>{yearsOfExp}+</span>
-              <span style={{ color: 'var(--color-text-muted)', fontSize: '0.78rem' }}>{lang === 'vi' ? 'Năm kinh nghiệm' : 'Years Experience'}</span>
+              <span className="hero-stats-value" style={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem', display: 'block', lineHeight: 1.1 }}>{yearsOfExp}+</span>
+              <span className="hero-stats-label" style={{ color: 'var(--color-text-muted)', fontSize: '0.78rem' }}>{lang === 'vi' ? 'Năm kinh nghiệm' : 'Years Experience'}</span>
             </div>
           </div>
 
-          <div style={{ width: 1, height: 28, background: 'var(--color-border-muted)' }} />
+          <div className="hero-stats-divider" />
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
             <CheckCircle2 size={20} color="var(--color-primary)" />
             <div style={{ textAlign: 'left' }}>
-              <span style={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem', display: 'block', lineHeight: 1.1 }}>{totalProjects}+</span>
-              <span style={{ color: 'var(--color-text-muted)', fontSize: '0.78rem' }}>{lang === 'vi' ? 'Dự án đã tham gia' : 'Projects Completed'}</span>
+              <span className="hero-stats-value" style={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem', display: 'block', lineHeight: 1.1 }}>{totalProjects}+</span>
+              <span className="hero-stats-label" style={{ color: 'var(--color-text-muted)', fontSize: '0.78rem' }}>{lang === 'vi' ? 'Dự án đã tham gia' : 'Projects Completed'}</span>
             </div>
           </div>
 

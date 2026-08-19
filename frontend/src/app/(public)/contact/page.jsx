@@ -1,4 +1,5 @@
 'use client';
+import SubPageHero3D from '../../../components/common/SubPageHero3D';
 import Link from 'next/link';
 
 import { useForm } from 'react-hook-form';
@@ -41,19 +42,16 @@ export default function ContactPage() {
   return (
     <div>
       {/* Hero */}
-      <div style={{ background: 'linear-gradient(135deg, #0A0A0A, #1A0800)', padding: 'calc(var(--nav-height) + 2.5rem) 0 4rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 500, height: 300, background: 'var(--color-primary)', filter: 'blur(120px)', opacity: 0.08, borderRadius: '50%' }} />
-        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <h1 style={{ background: 'linear-gradient(135deg, #fff, #FFB380)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', marginBottom: '1rem' }}>
-            {t('contact.title')}
-          </h1>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem' }}>{t('contact.sub')}</p>
-        </div>
-      </div>
+      <SubPageHero3D>
+        <h1 style={{ background: 'linear-gradient(135deg, #fff, #FFB380)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', marginBottom: '1rem' }}>
+          {t('contact.title')}
+        </h1>
+        <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem' }}>{t('contact.sub')}</p>
+      </SubPageHero3D>
 
       <div className="section">
         <div className="container">
-          <div className="grid-split-1-15" style={{ gap: '4rem' }}>
+          <div className="grid-split-1-15" style={{ gap: 'clamp(2rem, 5vw, 4rem)' }}>
             {/* Left: Contact Info */}
             <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
               <h2 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '2.5rem' }}>{t('contact.info_title')}</h2>
@@ -82,7 +80,7 @@ export default function ContactPage() {
 
             {/* Right: Form */}
             <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-              <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', padding: '2.5rem' }}>
+              <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', padding: 'clamp(1.5rem, 4vw, 2.5rem)' }}>
                 <h2 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '2rem' }}>{t('contact.form_heading')}</h2>
                 {user ? (
                   <form onSubmit={handleSubmit(d => mutation.mutate(d))} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>

@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { Plus, Pencil, Trash2, X, ToggleLeft, ToggleRight, Upload } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, EyeOff, Eye, Upload } from 'lucide-react';
 import { adminGetServices, adminCreateService, adminUpdateService, adminDeleteService, uploadFile, uploadMultiple } from '../../../../services/api';
 
 const ICON_OPTIONS = ['Settings', 'Eye', 'Cpu', 'Zap', 'Truck', 'Monitor', 'Wrench', 'Bot'];
 
-function ServiceModal({ service, onClose, onSave }) {
+function ServiceModal({ service, onClose, onSave, onDelete }) {
   const { register, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: service ? {
       nameVi: service.nameVi, nameEn: service.nameEn,
@@ -56,35 +56,33 @@ function ServiceModal({ service, onClose, onSave }) {
         <button onClick={onClose} style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: '50%', width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--color-text-muted)' }}><X size={16} /></button>
         <h3 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.75rem' }}>{service ? 'Sửa Dịch vụ' : 'Thêm Dịch vụ'}</h3>
         <form onSubmit={handleSubmit(handleSubmitForm)} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="grid-split-2" style={{ gap: '1rem' }}>
             <div className="form-group"><label className="form-label">Tên (VI) *</label><input {...register('nameVi', { required: true })} className="form-input" placeholder="Thiết kế máy tự động" />{errors.nameVi && <span className="form-error">Bắt buộc</span>}</div>
             <div className="form-group"><label className="form-label">Tên (EN) *</label><input {...register('nameEn', { required: true })} className="form-input" placeholder="Custom Machine Design" />{errors.nameEn && <span className="form-error">Required</span>}</div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="grid-split-2" style={{ gap: '1rem' }}>
             <div className="form-group"><label className="form-label">Mô tả (VI)</label><textarea {...register('descriptionVi')} className="form-textarea" rows={3} placeholder="Mô tả tiếng Việt..." /></div>
             <div className="form-group"><label className="form-label">Mô tả (EN)</label><textarea {...register('descriptionEn')} className="form-textarea" rows={3} placeholder="Description in English..." /></div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
-            <div className="form-group">
-              <label className="form-label">Icon</label>
-              <select {...register('icon')} className="form-select">
-                {ICON_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
-              </select>
-            </div>
-            <div className="form-group"><label className="form-label">Thứ tự</label><input {...register('order')} type="number" className="form-input" /></div>
-            <div className="form-group" style={{ justifyContent: 'center' }}>
-              <label className="form-label">Hiển thị</label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', marginTop: '0.5rem' }}>
-                <input {...register('isActive')} type="checkbox" style={{ accentColor: 'var(--color-primary)', width: 18, height: 18 }} />
-                <span style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Kích hoạt</span>
-              </label>
-            </div>
+          <div className="form-group">
+            <label className="form-label">Icon</label>
+            <select {...register('icon')} className="form-select">
+              {ICON_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
+            </select>
+          </div>
+          <div className="form-group"><label className="form-label">Thứ tự</label><input {...register('order')} type="number" className="form-input" /></div>
+          <div className="form-group">
+            <label className="form-label">Hiển thị</label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', marginTop: '0.5rem' }}>
+              <input {...register('isActive')} type="checkbox" style={{ accentColor: 'var(--color-primary)', width: 18, height: 18 }} />
+              <span style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Kích hoạt</span>
+            </label>
           </div>
           <div className="form-group">
             <label className="form-label">Công nghệ (cách nhau bằng dấu phẩy)</label>
             <input {...register('technologies')} className="form-input" placeholder="PLC, Robot, Siemens, ..." />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="grid-split-2" style={{ gap: '1rem' }}>
             <div className="form-group"><label className="form-label">Tính năng (VI) - mỗi dòng 1 mục</label><textarea {...register('featuresVi')} className="form-textarea" rows={4} placeholder="Tính năng 1&#10;Tính năng 2" /></div>
             <div className="form-group"><label className="form-label">Features (EN) - one per line</label><textarea {...register('featuresEn')} className="form-textarea" rows={4} placeholder="Feature 1&#10;Feature 2" /></div>
           </div>
@@ -106,9 +104,12 @@ function ServiceModal({ service, onClose, onSave }) {
               </div>
             )}
           </div>
-          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
-            <button type="button" onClick={onClose} className="btn btn-ghost">Huỷ</button>
-            <button type="submit" className="btn btn-primary">Lưu</button>
+          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'space-between' }}>
+            {service && <button type="button" onClick={() => { if (confirm('Xoá dịch vụ này?')) { onDelete(service._id); onClose(); } }} className="btn btn-sm" style={{ background: 'rgba(239,68,68,0.1)', color: '#EF4444', border: '1px solid rgba(239,68,68,0.3)' }}><Trash2 size={14} /> Xóa</button>}
+            <div style={{ display: 'flex', gap: '0.75rem', marginLeft: service ? 'auto' : '0' }}>
+              <button type="button" onClick={onClose} className="btn btn-ghost">Huỷ</button>
+              <button type="submit" className="btn btn-primary">Lưu</button>
+            </div>
           </div>
         </form>
       </div>
@@ -141,7 +142,7 @@ export default function AdminServices() {
           <tbody>
             {isLoading && <tr><td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>Đang tải...</td></tr>}
             {services.map(svc => (
-              <tr key={svc._id}>
+              <tr key={svc._id} onClick={() => setModal(svc)} style={{ cursor: 'pointer' }}>
                 <td><p style={{ fontWeight: 600, color: '#fff', marginBottom: '0.15rem', fontSize: '0.875rem' }}>{svc.nameVi}</p><p style={{ color: 'var(--color-text-muted)', fontSize: '0.78rem' }}>{svc.nameEn}</p></td>
                 <td><code style={{ background: 'var(--color-bg-3)', padding: '0.2rem 0.5rem', borderRadius: 4, fontSize: '0.78rem', color: 'var(--color-primary)' }}>{svc.slug}</code></td>
                 <td><div style={{ display: 'flex', gap: '0.3rem', flexWrap: 'wrap', maxWidth: 200 }}>{(svc.technologies || []).slice(0, 3).map(t => <span key={t} className="tag" style={{ fontSize: '0.72rem' }}>{t}</span>)}{svc.technologies?.length > 3 && <span style={{ color: 'var(--color-text-muted)', fontSize: '0.72rem' }}>+{svc.technologies.length - 3}</span>}</div></td>
@@ -150,8 +151,8 @@ export default function AdminServices() {
                   <button 
                     onClick={() => updateMut.mutate({ id: svc._id, data: { isActive: !svc.isActive } })} 
                     disabled={updateMut.isPending}
-                    style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: 'none', border: 'none', cursor: 'pointer', color: svc.isActive ? 'var(--color-success)' : 'var(--color-text-muted)', fontSize: '0.8rem', fontWeight: 600 }}>
-                    {svc.isActive ? <ToggleRight size={20} /> : <ToggleLeft size={20} />}
+                    style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: 'none', border: 'none', cursor: 'pointer', color: svc.isActive ? 'var(--color-success)' : '#EF4444', fontSize: '0.8rem', fontWeight: 600 }}>
+                    {svc.isActive ? <Eye size={20} /> : <EyeOff size={20} />}
                     {svc.isActive ? 'Hiện' : 'Ẩn'}
                   </button>
                 </td>
@@ -165,7 +166,7 @@ export default function AdminServices() {
           </tbody>
         </table>
       </div>
-      {modal && <ServiceModal service={modal === 'create' ? null : modal} onClose={() => setModal(null)} onSave={handleSave} />}
+      {modal && <ServiceModal service={modal === 'create' ? null : modal} onClose={() => setModal(null)} onSave={handleSave} onDelete={(id) => deleteMut.mutate(id)} />}
     </div>
   );
 }

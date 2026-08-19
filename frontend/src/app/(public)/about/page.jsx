@@ -1,4 +1,5 @@
 'use client';
+import SubPageHero3D from '../../../components/common/SubPageHero3D';
 
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
@@ -33,17 +34,14 @@ export default function AboutPage() {
   return (
     <div>
       {/* Hero */}
-      <div style={{ background: 'linear-gradient(135deg, #0A0A0A 0%, #1A0800 100%)', padding: 'calc(var(--nav-height) + 2.5rem) 0 4rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 600, height: 300, background: 'var(--color-primary)', filter: 'blur(120px)', opacity: 0.08, borderRadius: '50%' }} />
-        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <h1 style={{ background: 'linear-gradient(135deg, #fff, #FFB380)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', marginBottom: '1rem' }}>
-            {lang === 'vi' ? `Về ${appName}` : `About ${appName}`}
-          </h1>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem', maxWidth: 600, margin: '0 auto', whiteSpace: 'pre-line' }}>
-            {lang === 'vi' ? company?.aboutVi : company?.aboutEn}
-          </p>
-        </div>
-      </div>
+      <SubPageHero3D>
+        <h1 style={{ background: 'linear-gradient(135deg, #fff, #FFB380)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', marginBottom: '1rem' }}>
+          {lang === 'vi' ? `Về ${appName}` : `About ${appName}`}
+        </h1>
+        <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem', maxWidth: 600, margin: '0 auto', whiteSpace: 'pre-line' }}>
+          {lang === 'vi' ? company?.aboutVi : company?.aboutEn}
+        </p>
+      </SubPageHero3D>
 
       {/* Stats */}
       {company && (

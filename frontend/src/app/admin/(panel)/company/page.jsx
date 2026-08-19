@@ -102,7 +102,7 @@ export default function AdminCompany() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', padding: '2rem' }}>
               <h3 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.5rem', fontSize: '1rem' }}>Thông tin cơ bản</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div className="grid-split-2" style={{ gap: '1rem' }}>
                 <div className="form-group"><label className="form-label">Tên website (VI)</label><input {...register('nameVi')} className="form-input" /></div>
                 <div className="form-group"><label className="form-label">Web Name (EN)</label><input {...register('nameEn')} className="form-input" /></div>
                 <div className="form-group"><label className="form-label">Chữ chân trang (VI)</label><input {...register('poweredByVi')} className="form-input" placeholder="Powered by THANHTDH Engineering Team" /></div>
@@ -131,7 +131,7 @@ export default function AdminCompany() {
 
             <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', padding: '2rem' }}>
               <h3 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.5rem', fontSize: '1rem' }}>Giới thiệu</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div className="grid-split-2" style={{ gap: '1rem' }}>
                 <div className="form-group"><label className="form-label">Giới thiệu (VI)</label><textarea {...register('aboutVi')} className="form-textarea" rows={5} /></div>
                 <div className="form-group"><label className="form-label">About (EN)</label><textarea {...register('aboutEn')} className="form-textarea" rows={5} /></div>
                 <div className="form-group"><label className="form-label">Tầm nhìn (VI)</label><textarea {...register('visionVi')} className="form-textarea" rows={4} /></div>
@@ -155,14 +155,14 @@ export default function AdminCompany() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               {history.map((item, i) => (
-                <div key={i} style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', position: 'relative' }}>
+                <div key={i} style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-lg)', padding: '0.75rem 1rem', position: 'relative' }}>
                   <button type="button" onClick={() => setHistory(p => p.filter((_, idx) => idx !== i))} style={{ position: 'absolute', top: '1rem', right: '1rem', color: '#EF4444', background: 'none', border: 'none', cursor: 'pointer' }}><MinusCircle size={18} /></button>
-                  <div style={{ display: 'grid', gridTemplateColumns: '0.5fr 1fr 1fr', gap: '1rem', marginBottom: '0.75rem' }}>
-                    <div className="form-group"><label className="form-label">Thời gian</label><input value={item.year} onChange={e => setHistory(p => p.map((h, idx) => idx === i ? { ...h, year: e.target.value } : h))} className="form-input" type="text" placeholder="Ví dụ: 05/2023 hoặc 2023" /></div>
+                  <div className="form-group" style={{ marginBottom: '0.75rem' }}><label className="form-label">Thời gian</label><input value={item.year} onChange={e => setHistory(p => p.map((h, idx) => idx === i ? { ...h, year: e.target.value } : h))} className="form-input" type="text" placeholder="Ví dụ: 05/2023 hoặc 2023" /></div>
+                  <div className="grid-split-2" style={{ gap: '1rem', marginBottom: '0.75rem' }}>
                     <div className="form-group"><label className="form-label">Tiêu đề (VI)</label><input value={item.titleVi} onChange={e => setHistory(p => p.map((h, idx) => idx === i ? { ...h, titleVi: e.target.value } : h))} className="form-input" /></div>
                     <div className="form-group"><label className="form-label">Title (EN)</label><input value={item.titleEn} onChange={e => setHistory(p => p.map((h, idx) => idx === i ? { ...h, titleEn: e.target.value } : h))} className="form-input" /></div>
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div className="grid-split-2" style={{ gap: '1rem' }}>
                     <div className="form-group"><label className="form-label">Mô tả (VI)</label><textarea value={item.descriptionVi} onChange={e => setHistory(p => p.map((h, idx) => idx === i ? { ...h, descriptionVi: e.target.value } : h))} className="form-textarea" rows={2} /></div>
                     <div className="form-group"><label className="form-label">Description (EN)</label><textarea value={item.descriptionEn} onChange={e => setHistory(p => p.map((h, idx) => idx === i ? { ...h, descriptionEn: e.target.value } : h))} className="form-textarea" rows={2} /></div>
                   </div>
@@ -183,17 +183,17 @@ export default function AdminCompany() {
                 <PlusCircle size={16} /> Thêm thành viên
               </button>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.25rem' }}>
+            <div className="grid-split-2" style={{ gap: '1.25rem' }}>
               {team.map((member, i) => (
-                <div key={i} style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', position: 'relative' }}>
+                <div key={i} style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-lg)', padding: '0.75rem 1rem', position: 'relative' }}>
                   <button type="button" onClick={() => setTeam(p => p.filter((_, idx) => idx !== i))} style={{ position: 'absolute', top: '1rem', right: '1rem', color: '#EF4444', background: 'none', border: 'none', cursor: 'pointer' }}><MinusCircle size={18} /></button>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-                      <div className="form-group"><label className="form-label">Họ tên (VI)</label><input value={member.nameVi} onChange={e => setTeam(p => p.map((m, idx) => idx === i ? { ...m, nameVi: e.target.value } : m))} className="form-input" placeholder="Nguyễn Văn A" /></div>
+                    <div className="grid-split-2" style={{ gap: '0.75rem' }}>
+                        <div className="form-group"><label className="form-label">Họ tên (VI)</label><input value={member.nameVi} onChange={e => setTeam(p => p.map((m, idx) => idx === i ? { ...m, nameVi: e.target.value } : m))} className="form-input" placeholder="Nguyễn Văn A" /></div>
                       <div className="form-group"><label className="form-label">Name (EN)</label><input value={member.nameEn} onChange={e => setTeam(p => p.map((m, idx) => idx === i ? { ...m, nameEn: e.target.value } : m))} className="form-input" /></div>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-                      <div className="form-group"><label className="form-label">Chức vụ (VI)</label><input value={member.positionVi} onChange={e => setTeam(p => p.map((m, idx) => idx === i ? { ...m, positionVi: e.target.value } : m))} className="form-input" placeholder="Trưởng phòng kỹ thuật" /></div>
+                    <div className="grid-split-2" style={{ gap: '0.75rem' }}>
+                        <div className="form-group"><label className="form-label">Chức vụ (VI)</label><input value={member.positionVi} onChange={e => setTeam(p => p.map((m, idx) => idx === i ? { ...m, positionVi: e.target.value } : m))} className="form-input" placeholder="Trưởng phòng kỹ thuật" /></div>
                       <div className="form-group"><label className="form-label">Position (EN)</label><input value={member.positionEn} onChange={e => setTeam(p => p.map((m, idx) => idx === i ? { ...m, positionEn: e.target.value } : m))} className="form-input" /></div>
                     </div>
                   </div>
@@ -216,12 +216,14 @@ export default function AdminCompany() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {certs.map((cert, i) => (
-                <div key={i} style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-lg)', padding: '1.25rem', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr auto', gap: '0.75rem', alignItems: 'end' }}>
-                  <div className="form-group" style={{ margin: 0 }}><label className="form-label">Tên (VI)</label><input value={cert.nameVi} onChange={e => setCerts(p => p.map((c, idx) => idx === i ? { ...c, nameVi: e.target.value } : c))} className="form-input" placeholder="ISO 9001" /></div>
-                  <div className="form-group" style={{ margin: 0 }}><label className="form-label">Name (EN)</label><input value={cert.nameEn} onChange={e => setCerts(p => p.map((c, idx) => idx === i ? { ...c, nameEn: e.target.value } : c))} className="form-input" /></div>
+                <div key={i} style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-lg)', padding: '0.75rem 1rem', position: 'relative', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  <div className="grid-split-2" style={{ gap: '0.75rem' }}>
+                    <div className="form-group" style={{ margin: 0 }}><label className="form-label">Tên (VI)</label><input value={cert.nameVi} onChange={e => setCerts(p => p.map((c, idx) => idx === i ? { ...c, nameVi: e.target.value } : c))} className="form-input" placeholder="ISO 9001" /></div>
+                    <div className="form-group" style={{ margin: 0 }}><label className="form-label">Name (EN)</label><input value={cert.nameEn} onChange={e => setCerts(p => p.map((c, idx) => idx === i ? { ...c, nameEn: e.target.value } : c))} className="form-input" /></div>
+                  </div>
                   <div className="form-group" style={{ margin: 0 }}><label className="form-label">Cấp bởi</label><input value={cert.issuedBy} onChange={e => setCerts(p => p.map((c, idx) => idx === i ? { ...c, issuedBy: e.target.value } : c))} className="form-input" placeholder="TÜV SÜD" /></div>
                   <div className="form-group" style={{ margin: 0 }}><label className="form-label">Năm</label><input value={cert.year} onChange={e => setCerts(p => p.map((c, idx) => idx === i ? { ...c, year: e.target.value } : c))} className="form-input" type="number" /></div>
-                  <button type="button" onClick={() => setCerts(p => p.filter((_, idx) => idx !== i))} style={{ color: '#EF4444', background: 'none', border: 'none', cursor: 'pointer', paddingBottom: '0.25rem' }}><MinusCircle size={20} /></button>
+                  <button type="button" onClick={() => setCerts(p => p.filter((_, idx) => idx !== i))} style={{ position: 'absolute', top: '1rem', right: '1rem', color: '#EF4444', background: 'none', border: 'none', cursor: 'pointer' }}><MinusCircle size={18} /></button>
                 </div>
               ))}
               {certs.length === 0 && <p style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: '2rem 0' }}>Chưa có chứng chỉ nào</p>}

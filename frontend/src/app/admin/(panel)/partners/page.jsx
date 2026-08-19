@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { Plus, Pencil, Trash2, X, Upload, Globe, ToggleLeft, ToggleRight } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Upload, Globe, EyeOff, Eye } from 'lucide-react';
 import { adminGetPartners, adminCreatePartner, adminUpdatePartner, adminDeletePartner, uploadFile } from '../../../../services/api';
 
-function PartnerModal({ partner, onClose, onSave }) {
+function PartnerModal({ partner, onClose, onSave, onDelete }) {
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: partner || { isActive: true, order: 0 }
   });
@@ -46,19 +46,20 @@ function PartnerModal({ partner, onClose, onSave }) {
             </div>
           </div>
           <div className="form-group"><label className="form-label">Website</label><input {...register('website')} className="form-input" placeholder="https://partner.com" type="url" /></div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div className="form-group"><label className="form-label">Thứ tự</label><input {...register('order')} type="number" className="form-input" /></div>
-            <div className="form-group" style={{ justifyContent: 'flex-end' }}>
-              <label className="form-label">Trạng thái</label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', marginTop: '0.5rem' }}>
-                <input {...register('isActive')} type="checkbox" defaultChecked style={{ accentColor: 'var(--color-primary)', width: 16, height: 16 }} />
-                <span style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Kích hoạt</span>
-              </label>
-            </div>
+          <div className="form-group"><label className="form-label">Thứ tự</label><input {...register('order')} type="number" className="form-input" /></div>
+          <div className="form-group">
+            <label className="form-label">Trạng thái</label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', marginTop: '0.5rem' }}>
+              <input {...register('isActive')} type="checkbox" defaultChecked style={{ accentColor: 'var(--color-primary)', width: 16, height: 16 }} />
+              <span style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Kích hoạt</span>
+            </label>
           </div>
-          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
-            <button type="button" onClick={onClose} className="btn btn-ghost">Huỷ</button>
-            <button type="submit" className="btn btn-primary">Lưu</button>
+          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'space-between', marginTop: '0.5rem' }}>
+            {partner && <button type="button" onClick={() => { if (confirm('Xoá đối tác này?')) { onDelete(partner._id); onClose(); } }} className="btn btn-sm" style={{ background: 'rgba(239,68,68,0.1)', color: '#EF4444', border: '1px solid rgba(239,68,68,0.3)' }}><Trash2 size={14} /> Xóa</button>}
+            <div style={{ display: 'flex', gap: '0.75rem', marginLeft: partner ? 'auto' : '0' }}>
+              <button type="button" onClick={onClose} className="btn btn-ghost">Huỷ</button>
+              <button type="submit" className="btn btn-primary">Lưu</button>
+            </div>
           </div>
         </form>
       </div>
@@ -78,7 +79,7 @@ export default function AdminPartners() {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div><h1 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '0.25rem' }}>Quản lý Đối tác</h1><p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Đối tác hiển thị trên trang chủ</p></div>
         <button onClick={() => setModal('create')} className="btn btn-primary"><Plus size={16} /> Thêm Đối tác</button>
       </div>
@@ -88,14 +89,14 @@ export default function AdminPartners() {
           <tbody>
             {isLoading && <tr><td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>Đang tải...</td></tr>}
             {partners.map(p => (
-              <tr key={p._id}>
+              <tr key={p._id} onClick={() => setModal(p)} style={{ cursor: 'pointer' }}>
                 <td>{p.logoUrl ? <img src={p.logoUrl} alt={p.name} style={{ height: 36, maxWidth: 100, objectFit: 'contain', filter: 'brightness(0.9)' }} /> : <div style={{ width: 60, height: 36, background: 'var(--color-bg-3)', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', color: 'var(--color-text-muted)' }}>No logo</div>}</td>
                 <td style={{ fontWeight: 600, color: '#fff', fontSize: '0.875rem' }}>{p.name}</td>
                 <td>{p.website ? <a href={p.website} target="_blank" rel="noreferrer" style={{ color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem' }}><Globe size={13} />{p.website.replace('https://', '').substring(0, 25)}</a> : <span style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>—</span>}</td>
                 <td style={{ color: 'var(--color-text-muted)' }}>{p.order}</td>
                 <td>
-                  <button onClick={() => updateMut.mutate({ id: p._id, data: { isActive: !p.isActive } })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: p.isActive ? 'var(--color-success)' : 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', fontWeight: 600 }}>
-                    {p.isActive ? <><ToggleRight size={20} /> Hiện</> : <><ToggleLeft size={20} /> Ẩn</>}
+                  <button onClick={() => updateMut.mutate({ id: p._id, data: { isActive: !p.isActive } })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: p.isActive ? 'var(--color-success)' : '#EF4444', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', fontWeight: 600 }}>
+                    {p.isActive ? <><Eye size={20} /> Hiện</> : <><EyeOff size={20} /> Ẩn</>}
                   </button>
                 </td>
                 <td><div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -108,7 +109,7 @@ export default function AdminPartners() {
           </tbody>
         </table>
       </div>
-      {modal && <PartnerModal partner={modal === 'create' ? null : modal} onClose={() => setModal(null)} onSave={handleSave} />}
+      {modal && <PartnerModal partner={modal === 'create' ? null : modal} onClose={() => setModal(null)} onSave={handleSave} onDelete={(id) => deleteMut.mutate(id)} />}
     </div>
   );
 }

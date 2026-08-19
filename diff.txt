@@ -1,0 +1,841 @@
+﻿diff --git a/frontend/src/app/admin/(panel)/banners/page.jsx b/frontend/src/app/admin/(panel)/banners/page.jsx
+index c16e010..af63c33 100644
+--- a/frontend/src/app/admin/(panel)/banners/page.jsx
++++ b/frontend/src/app/admin/(panel)/banners/page.jsx
+@@ -5,7 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+ import { motion } from 'framer-motion';
+ import { useForm } from 'react-hook-form';
+ import toast from 'react-hot-toast';
+-import { Plus, Pencil, Trash2, X, ToggleLeft, ToggleRight, Upload } from 'lucide-react';
++import { Plus, Pencil, Trash2, X, EyeOff, Eye, Upload } from 'lucide-react';
+ import { adminGetBanners, adminCreateBanner, adminUpdateBanner, adminDeleteBanner, uploadFile } from '../../../../services/api';
+ 
+ function BannerModal({ banner, onClose, onSave }) {
+@@ -82,8 +82,8 @@ export default function AdminBanners() {
+                   <td style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>{banner.link || 'ΓÇö'}</td>
+                   <td style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>{banner.order}</td>
+                   <td>
+-                    <button onClick={() => handleToggle(banner)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: banner.isActive ? 'var(--color-success)' : 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', fontWeight: 600 }}>
+-                      {banner.isActive ? <><ToggleRight size={20} /> Hiß╗çn</> : <><ToggleLeft size={20} /> ß║¿n</>}
++                    <button onClick={() => handleToggle(banner)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: banner.isActive ? 'var(--color-success)' : '#EF4444', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', fontWeight: 600 }}>
++                      {banner.isActive ? <><Eye size={20} /> Hiß╗çn</> : <><EyeOff size={20} /> ß║¿n</>}
+                     </button>
+                   </td>
+                   <td>
+diff --git a/frontend/src/app/admin/(panel)/company/page.jsx b/frontend/src/app/admin/(panel)/company/page.jsx
+index ef4e506..a02e189 100644
+--- a/frontend/src/app/admin/(panel)/company/page.jsx
++++ b/frontend/src/app/admin/(panel)/company/page.jsx
+@@ -102,19 +102,23 @@ export default function AdminCompany() {
+           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+             <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', padding: '2rem' }}>
+               <h3 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.5rem', fontSize: '1rem' }}>Th├┤ng tin c╞í bß║ún</h3>
+-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
++              <div className="grid-split-2" style={{ gap: '1rem', marginBottom: '1rem' }}>
+                 <div className="form-group"><label className="form-label">T├¬n website (VI)</label><input {...register('nameVi')} className="form-input" /></div>
+                 <div className="form-group"><label className="form-label">Web Name (EN)</label><input {...register('nameEn')} className="form-input" /></div>
++              </div>
++              <div className="grid-split-2" style={{ gap: '1rem', marginBottom: '1rem' }}>
+                 <div className="form-group"><label className="form-label">Chß╗» ch├ón trang (VI)</label><input {...register('poweredByVi')} className="form-input" placeholder="Powered by THANHTDH Engineering Team" /></div>
+                 <div className="form-group"><label className="form-label">Footer text (EN)</label><input {...register('poweredByEn')} className="form-input" placeholder="Powered by THANHTDH Engineering Team" /></div>
+-                <div className="form-group" style={{ gridColumn: '1/-1' }}>
++              </div>
++              <div className="grid-split-2" style={{ gap: '1rem' }}>
++                <div className="form-group">
+                   <label className="form-label">Video Trang chß╗º (Tß║úi l├¬n file .mp4, nhß║¡p YouTube Link, hoß║╖c Google Drive Link)</label>
+                   <div style={{ display: 'flex', gap: '1rem' }}>
+                     <input {...register('videoUrl')} className="form-input" style={{ flex: 1 }} placeholder="V├¡ dß╗Ñ: /uploads/videos/demo.mp4 hoß║╖c https://www.youtube.com/watch?v=..." />
+                     <label className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                       <input type="file" accept="video/mp4" style={{ display: 'none' }} onChange={handleVideoUpload} disabled={isUploading} />
+                       <Upload size={18} />
+-                      {isUploading ? '─Éang tß║úi...' : 'Tß║úi video l├¬n'}
++                      {isUploading ? '─Éang tß║úi...' : 'Tß║úi l├¬n'}
+                     </label>
+                   </div>
+                 </div>
+@@ -122,7 +126,7 @@ export default function AdminCompany() {
+                 <div className="form-group"><label className="form-label">─Éiß╗çn thoß║íi</label><input {...register('phone')} className="form-input" /></div>
+                 <div className="form-group"><label className="form-label">Email</label><input {...register('email')} type="email" className="form-input" /></div>
+                 <div className="form-group"><label className="form-label">N─âm th├ánh lß║¡p</label><input {...register('founded')} type="number" className="form-input" /></div>
+-                <div className="form-group" style={{ gridColumn: '1/-1' }}>
++                <div className="form-group">
+                   <label className="form-label">Bß║ún ─æß╗ô (T├╣y chß╗ìn nhß║¡p ─æ╞░ß╗¥ng dß║½n nh├║ng Google Maps Embed URL - nß║┐u ─æß╗â trß╗æng sß║╜ tß╗▒ ─æß╗Öng t├¼m theo ─Éß╗ïa chß╗ë)</label>
+                   <input {...register('mapUrl')} className="form-input" placeholder="V├¡ dß╗Ñ: https://www.google.com/maps/embed?pb=..." />
+                 </div>
+@@ -131,11 +135,15 @@ export default function AdminCompany() {
+ 
+             <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', padding: '2rem' }}>
+               <h3 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.5rem', fontSize: '1rem' }}>Giß╗¢i thiß╗çu</h3>
+-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
++              <div className="grid-split-2" style={{ gap: '1rem', marginBottom: '1rem' }}>
+                 <div className="form-group"><label className="form-label">Giß╗¢i thiß╗çu (VI)</label><textarea {...register('aboutVi')} className="form-textarea" rows={5} /></div>
+                 <div className="form-group"><label className="form-label">About (EN)</label><textarea {...register('aboutEn')} className="form-textarea" rows={5} /></div>
++              </div>
++              <div className="grid-split-2" style={{ gap: '1rem', marginBottom: '1rem' }}>
+                 <div className="form-group"><label className="form-label">Tß║ºm nh├¼n (VI)</label><textarea {...register('visionVi')} className="form-textarea" rows={4} /></div>
+                 <div className="form-group"><label className="form-label">Vision (EN)</label><textarea {...register('visionEn')} className="form-textarea" rows={4} /></div>
++              </div>
++              <div className="grid-split-2" style={{ gap: '1rem' }}>
+                 <div className="form-group"><label className="form-label">Sß╗⌐ mß╗çnh (VI)</label><textarea {...register('missionVi')} className="form-textarea" rows={4} /></div>
+                 <div className="form-group"><label className="form-label">Mission (EN)</label><textarea {...register('missionEn')} className="form-textarea" rows={4} /></div>
+               </div>
+@@ -157,12 +165,14 @@ export default function AdminCompany() {
+               {history.map((item, i) => (
+                 <div key={i} style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', position: 'relative' }}>
+                   <button type="button" onClick={() => setHistory(p => p.filter((_, idx) => idx !== i))} style={{ position: 'absolute', top: '1rem', right: '1rem', color: '#EF4444', background: 'none', border: 'none', cursor: 'pointer' }}><MinusCircle size={18} /></button>
+-                  <div style={{ display: 'grid', gridTemplateColumns: '0.5fr 1fr 1fr', gap: '1rem', marginBottom: '0.75rem' }}>
++                  <div className="grid-split-2" style={{ gap: '1rem', marginBottom: '0.75rem' }}>
+                     <div className="form-group"><label className="form-label">Thß╗¥i gian</label><input value={item.year} onChange={e => setHistory(p => p.map((h, idx) => idx === i ? { ...h, year: e.target.value } : h))} className="form-input" type="text" placeholder="V├¡ dß╗Ñ: 05/2023 hoß║╖c 2023" /></div>
++                  </div>
++                  <div className="grid-split-2" style={{ gap: '1rem', marginBottom: '0.75rem' }}>
+                     <div className="form-group"><label className="form-label">Ti├¬u ─æß╗ü (VI)</label><input value={item.titleVi} onChange={e => setHistory(p => p.map((h, idx) => idx === i ? { ...h, titleVi: e.target.value } : h))} className="form-input" /></div>
+                     <div className="form-group"><label className="form-label">Title (EN)</label><input value={item.titleEn} onChange={e => setHistory(p => p.map((h, idx) => idx === i ? { ...h, titleEn: e.target.value } : h))} className="form-input" /></div>
+                   </div>
+-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
++                  <div className="grid-split-2" style={{ gap: '1rem' }}>
+                     <div className="form-group"><label className="form-label">M├┤ tß║ú (VI)</label><textarea value={item.descriptionVi} onChange={e => setHistory(p => p.map((h, idx) => idx === i ? { ...h, descriptionVi: e.target.value } : h))} className="form-textarea" rows={2} /></div>
+                     <div className="form-group"><label className="form-label">Description (EN)</label><textarea value={item.descriptionEn} onChange={e => setHistory(p => p.map((h, idx) => idx === i ? { ...h, descriptionEn: e.target.value } : h))} className="form-textarea" rows={2} /></div>
+                   </div>
+@@ -183,16 +193,16 @@ export default function AdminCompany() {
+                 <PlusCircle size={16} /> Th├¬m th├ánh vi├¬n
+               </button>
+             </div>
+-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.25rem' }}>
++            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+               {team.map((member, i) => (
+                 <div key={i} style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', position: 'relative' }}>
+                   <button type="button" onClick={() => setTeam(p => p.filter((_, idx) => idx !== i))} style={{ position: 'absolute', top: '1rem', right: '1rem', color: '#EF4444', background: 'none', border: 'none', cursor: 'pointer' }}><MinusCircle size={18} /></button>
+                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
++                    <div className="grid-split-2" style={{ gap: '0.75rem' }}>
+                       <div className="form-group"><label className="form-label">Hß╗ì t├¬n (VI)</label><input value={member.nameVi} onChange={e => setTeam(p => p.map((m, idx) => idx === i ? { ...m, nameVi: e.target.value } : m))} className="form-input" placeholder="Nguyß╗àn V─ân A" /></div>
+                       <div className="form-group"><label className="form-label">Name (EN)</label><input value={member.nameEn} onChange={e => setTeam(p => p.map((m, idx) => idx === i ? { ...m, nameEn: e.target.value } : m))} className="form-input" /></div>
+                     </div>
+-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
++                    <div className="grid-split-2" style={{ gap: '0.75rem' }}>
+                       <div className="form-group"><label className="form-label">Chß╗⌐c vß╗Ñ (VI)</label><input value={member.positionVi} onChange={e => setTeam(p => p.map((m, idx) => idx === i ? { ...m, positionVi: e.target.value } : m))} className="form-input" placeholder="Tr╞░ß╗ƒng ph├▓ng kß╗╣ thuß║¡t" /></div>
+                       <div className="form-group"><label className="form-label">Position (EN)</label><input value={member.positionEn} onChange={e => setTeam(p => p.map((m, idx) => idx === i ? { ...m, positionEn: e.target.value } : m))} className="form-input" /></div>
+                     </div>
+@@ -216,7 +226,7 @@ export default function AdminCompany() {
+             </div>
+             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+               {certs.map((cert, i) => (
+-                <div key={i} style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-lg)', padding: '1.25rem', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr auto', gap: '0.75rem', alignItems: 'end' }}>
++                <div key={i} style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-lg)', padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', alignItems: 'end' }}>
+                   <div className="form-group" style={{ margin: 0 }}><label className="form-label">T├¬n (VI)</label><input value={cert.nameVi} onChange={e => setCerts(p => p.map((c, idx) => idx === i ? { ...c, nameVi: e.target.value } : c))} className="form-input" placeholder="ISO 9001" /></div>
+                   <div className="form-group" style={{ margin: 0 }}><label className="form-label">Name (EN)</label><input value={cert.nameEn} onChange={e => setCerts(p => p.map((c, idx) => idx === i ? { ...c, nameEn: e.target.value } : c))} className="form-input" /></div>
+                   <div className="form-group" style={{ margin: 0 }}><label className="form-label">Cß║Ñp bß╗ƒi</label><input value={cert.issuedBy} onChange={e => setCerts(p => p.map((c, idx) => idx === i ? { ...c, issuedBy: e.target.value } : c))} className="form-input" placeholder="T├£V S├£D" /></div>
+diff --git a/frontend/src/app/admin/(panel)/contacts/page.jsx b/frontend/src/app/admin/(panel)/contacts/page.jsx
+index b567855..161eceb 100644
+--- a/frontend/src/app/admin/(panel)/contacts/page.jsx
++++ b/frontend/src/app/admin/(panel)/contacts/page.jsx
+@@ -4,7 +4,7 @@ import { useState } from 'react';
+ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+ import { motion } from 'framer-motion';
+ import toast from 'react-hot-toast';
+-import { Trash2, X, Eye, CheckCircle, Mail, Phone, Building2, MessageSquare } from 'lucide-react';
++import { Trash2, X, Eye, CheckCircle, Mail, Phone, Building2, MessageSquare, List, MailOpen, User, Calendar, Activity } from 'lucide-react';
+ import { adminGetContacts, adminUpdateContact, adminDeleteContact } from '../../../../services/api';
+ 
+ const STATUS_CONFIG = {
+@@ -13,13 +13,14 @@ const STATUS_CONFIG = {
+   replied: { label: '─É├ú phß║ún hß╗ôi', color: '#22C55E', bg: 'rgba(34,197,94,0.12)', border: 'rgba(34,197,94,0.35)' },
+ };
+ 
+-function ContactDetailModal({ contact, onClose, onStatusChange }) {
++function ContactDetailModal({ contact, onClose, onStatusChange, onDelete }) {
+   const cfg = STATUS_CONFIG[contact.status] || STATUS_CONFIG.new;
+   return (
+     <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', backdropFilter: 'blur(8px)' }}>
+-      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+-        style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', padding: '2.25rem', width: '100%', maxWidth: 520, position: 'relative', maxHeight: '90vh', overflowY: 'auto' }}>
+-        <button onClick={onClose} style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: '50%', width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--color-text-muted)' }}><X size={16} /></button>
++      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', padding: 0, width: '100%', maxWidth: 520, position: 'relative', display: 'flex', flexDirection: 'column', maxHeight: '90vh' }}>
++<button onClick={onClose} style={{ position: 'absolute', top: '0.75rem', right: '0.75rem', background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: '50%', width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--color-text-muted)', zIndex: 10 }}><X size={16} /></button>
++<div style={{ padding: '2.25rem', overflowY: 'auto', flex: 1 }}>
++
+         
+         <div style={{ marginBottom: '1.75rem' }}>
+           <span style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`, fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{cfg.label}</span>
+@@ -65,17 +66,24 @@ function ContactDetailModal({ contact, onClose, onStatusChange }) {
+           <p style={{ color: '#fff', fontSize: '0.95rem', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{contact.message}</p>
+         </div>
+ 
+-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+-          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', fontWeight: 600, alignSelf: 'center', marginRight: '0.25rem' }}>Cß║¡p nhß║¡t trß║íng th├íi:</p>
+-          {Object.entries(STATUS_CONFIG).map(([key, val]) => (
+-            <button key={key} onClick={() => onStatusChange(key)}
+-              disabled={contact.status === key}
+-              style={{ background: contact.status === key ? val.bg : 'var(--color-surface)', color: val.color, border: `1px solid ${val.border}`, borderRadius: 'var(--radius-md)', padding: '0.4rem 0.875rem', fontSize: '0.8rem', fontWeight: 600, cursor: contact.status === key ? 'default' : 'pointer', opacity: contact.status === key ? 1 : 0.7, transition: 'all 0.2s' }}>
+-              {val.label}
+-            </button>
+-          ))}
++        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
++          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', fontWeight: 600 }}>Cß║¡p nhß║¡t trß║íng th├íi:</p>
++          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
++            {Object.entries(STATUS_CONFIG).map(([key, val]) => (
++              <button key={key} onClick={() => onStatusChange(key)}
++                disabled={contact.status === key}
++                style={{ background: contact.status === key ? val.bg : 'var(--color-surface)', color: val.color, border: `1px solid ${val.border}`, borderRadius: 'var(--radius-md)', padding: '0.4rem 0.875rem', fontSize: '0.8rem', fontWeight: 600, cursor: contact.status === key ? 'default' : 'pointer', opacity: contact.status === key ? 1 : 0.7, transition: 'all 0.2s' }}>
++                {val.label}
++              </button>
++            ))}
++          </div>
++          <div style={{ marginTop: '0.5rem', paddingTop: '1rem', borderTop: '1px solid var(--color-border-muted)', display: 'flex', justifyContent: 'flex-end' }}>
++            <button type="button" onClick={() => onDelete(contact._id)} className="btn btn-ghost" style={{ color: '#EF4444' }}>Xo├í</button>
++          </div>
+         </div>
+-      </motion.div>
++      
++</div>
++</motion.div>
+     </div>
+   );
+ }
+@@ -99,6 +107,13 @@ export default function AdminContacts() {
+     setSelected(prev => ({ ...prev, status }));
+   };
+ 
++  const handleDelete = (id) => {
++    if (confirm('Xo├í li├¬n hß╗ç n├áy?')) {
++      deleteMut.mutate(id);
++      setSelected(null);
++    }
++  };
++
+   // Mark as read when opening
+   const openContact = (contact) => {
+     setSelected(contact);
+@@ -111,7 +126,7 @@ export default function AdminContacts() {
+ 
+   return (
+     <div>
+-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
++      <div className="admin-page-header">
+         <div>
+           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
+             <h1 style={{ fontFamily: 'var(--font-heading)', color: '#fff' }}>H├▓m th╞░ Li├¬n hß╗ç</h1>
+@@ -131,11 +146,11 @@ export default function AdminContacts() {
+         </div>
+       </div>
+ 
+-      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
++      <div className="table-responsive" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
+         <table className="admin-table">
+-          <thead><tr><th>T├¬n</th><th>Email</th><th>─Éiß╗çn thoß║íi</th><th>Dß╗ïch vß╗Ñ</th><th>Trß║íng th├íi</th><th>Ng├áy gß╗¡i</th><th>Thao t├íc</th></tr></thead>
++          <thead><tr><th>T├¬n</th><th>Trß║íng th├íi</th><th>Ng├áy gß╗¡i</th></tr></thead>
+           <tbody>
+-            {isLoading && <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>─Éang tß║úi...</td></tr>}
++            {isLoading && <tr><td colSpan={3} style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>─Éang tß║úi...</td></tr>}
+             {contacts.map(c => {
+               const cfg = STATUS_CONFIG[c.status] || STATUS_CONFIG.new;
+               return (
+@@ -144,9 +159,6 @@ export default function AdminContacts() {
+                     <p style={{ fontWeight: c.status === 'new' ? 700 : 500, color: c.status === 'new' ? '#fff' : 'var(--color-text)', fontSize: '0.875rem' }}>{c.name}</p>
+                     {c.company && <p style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem' }}>{c.company}</p>}
+                   </td>
+-                  <td style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>{c.email}</td>
+-                  <td style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>{c.phone || 'ΓÇö'}</td>
+-                  <td style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', maxWidth: 140 }}><span style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{c.service || 'ΓÇö'}</span></td>
+                   <td onClick={e => e.stopPropagation()}>
+                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', alignItems: 'flex-start' }}>
+                       <span style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}`, fontSize: '0.72rem', fontWeight: 700, padding: '0.2rem 0.625rem', borderRadius: 'var(--radius-full)', letterSpacing: '0.04em' }}>{cfg.label}</span>
+@@ -160,22 +172,16 @@ export default function AdminContacts() {
+                   <td style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
+                     {new Date(c.createdAt).toLocaleDateString('vi-VN')}
+                   </td>
+-                  <td onClick={e => e.stopPropagation()}>
+-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+-                      <button onClick={() => openContact(c)} className="btn btn-ghost btn-sm"><Eye size={14} /></button>
+-                      <button onClick={() => { if (confirm('Xo├í li├¬n hß╗ç n├áy?')) deleteMut.mutate(c._id); }} className="btn btn-sm" style={{ background: 'rgba(239,68,68,0.1)', color: '#EF4444', border: '1px solid rgba(239,68,68,0.3)' }}><Trash2 size={14} /></button>
+-                    </div>
+-                  </td>
+                 </tr>
+               );
+             })}
+-            {!isLoading && contacts.length === 0 && <tr><td colSpan={7} style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: '3rem' }}>Kh├┤ng c├│ li├¬n hß╗ç n├áo</td></tr>}
++            {!isLoading && contacts.length === 0 && <tr><td colSpan={3} style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: '3rem' }}>Kh├┤ng c├│ li├¬n hß╗ç n├áo</td></tr>}
+           </tbody>
+         </table>
+       </div>
+ 
+       {selected && (
+-        <ContactDetailModal contact={selected} onClose={() => setSelected(null)} onStatusChange={handleStatusChange} />
++        <ContactDetailModal contact={selected} onClose={() => setSelected(null)} onStatusChange={handleStatusChange} onDelete={handleDelete} />
+       )}
+     </div>
+   );
+diff --git a/frontend/src/app/admin/(panel)/courses/page.jsx b/frontend/src/app/admin/(panel)/courses/page.jsx
+index 9632cad..e5b7716 100644
+--- a/frontend/src/app/admin/(panel)/courses/page.jsx
++++ b/frontend/src/app/admin/(panel)/courses/page.jsx
+@@ -4,10 +4,11 @@ import { useState } from 'react';
+ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+ import { useForm } from 'react-hook-form';
+ import toast from 'react-hot-toast';
+-import { Plus, Pencil, Trash2, X, Upload, PlusCircle, MinusCircle, ToggleLeft, ToggleRight } from 'lucide-react';
++import { Plus, Pencil, Trash2, X, Upload, PlusCircle, MinusCircle, Eye, EyeOff } from 'lucide-react';
+ import { adminGetCourses, adminCreateCourse, adminUpdateCourse, adminDeleteCourse, uploadFile, uploadMultiple } from '../../../../services/api';
+ 
+-function CourseModal({ course, onClose, onSave }) {
++function CourseModal({ course, onClose, onSave, onDelete }) {
++  const [mode, setMode] = useState(course ? 'view' : 'edit');
+   const { register, handleSubmit, formState: { errors } } = useForm({
+     defaultValues: course ? {
+       nameVi: course.nameVi, nameEn: course.nameEn,
+@@ -38,7 +39,7 @@ function CourseModal({ course, onClose, onSave }) {
+       const res = await uploadMultiple(fd);
+       setImages(p => [...p, ...res.files.map(f => f.url.replace('/uploads/images/', ''))]);
+       toast.success(`─É├ú tß║úi ${res.files.length} ß║únh`);
+-    } catch { toast.error('Lß╗ùi tß║úi ß║únh'); }
++    } catch { toast.error('L∩┐╜i tß║úi ß║únh'); }
+     finally { setUploading(false); }
+   };
+ 
+@@ -51,8 +52,8 @@ function CourseModal({ course, onClose, onSave }) {
+       fd.append('file', file);
+       const res = await uploadFile(fd);
+       setCatalogName(res.filename);
+-      toast.success('T├ái liß╗çu ─æ├ú ─æ╞░ß╗úc tß║úi l├¬n!');
+-    } catch { toast.error('Lß╗ùi tß║úi t├ái liß╗çu'); }
++      toast.success('T├ái li∩┐╜!u ∩┐╜├ú ∩┐╜╞░ß╗úc tß║úi l├¬n!');
++    } catch { toast.error('L∩┐╜i tß║úi t├ái li∩┐╜!u'); }
+     finally { setUploadingCatalog(false); }
+   };
+ 
+@@ -60,10 +61,10 @@ function CourseModal({ course, onClose, onSave }) {
+     <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', backdropFilter: 'blur(8px)' }}>
+       <div style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', padding: '2.25rem', width: '100%', maxWidth: 680, position: 'relative', maxHeight: '92vh', overflowY: 'auto' }}>
+         <button onClick={onClose} style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: '50%', width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--color-text-muted)' }}><X size={16} /></button>
+-        <h3 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.75rem' }}>{course ? 'Sß╗¡a T├ái liß╗çu' : 'Th├¬m T├ái liß╗çu'}</h3>
+-        <form onSubmit={handleSubmit(d => onSave({ ...d, specifications: specs, images, catalogUrl: catalogName, order: Number(d.order) }))} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+-            <div className="form-group"><label className="form-label">T├¬n t├ái liß╗çu (VI) *</label><input {...register('nameVi', { required: true })} className="form-input" />{errors.nameVi && <span className="form-error">Bß║»t buß╗Öc</span>}</div>
++        <h3 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.75rem' }}>{mode === 'view' ? 'Chi Tiß║┐t T├ái Li∩┐╜!u' : (course ? 'Sß╗¡a T├ái Li∩┐╜!u' : 'Th├¬m T├ái Li∩┐╜!u')}</h3>
++        <form onSubmit={handleSubmit(d => onSave({ ...d, specifications: specs, images, catalogUrl: catalogName, order: Number(d.order) }))} className={mode === 'view' ? 'read-only-form' : ''} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
++          <div className="grid-split-2" style={{ gap: '1rem' }}>
++            <div className="form-group"><label className="form-label">T├¬n t├ái li∩┐╜!u (VI) *</label><input {...register('nameVi', { required: true })} className="form-input" />{errors.nameVi && <span className="form-error">Bß║»t bu∩┐╜"c</span>}</div>
+             <div className="form-group"><label className="form-label">Document Name (EN) *</label><input {...register('nameEn', { required: true })} className="form-input" />{errors.nameEn && <span className="form-error">Required</span>}</div>
+           </div>
+           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+@@ -71,7 +72,7 @@ function CourseModal({ course, onClose, onSave }) {
+             <div className="form-group"><label className="form-label">Category (EN)</label><input {...register('categoryEn')} className="form-input" placeholder="PLC Programming" /></div>
+             <div className="form-group"><label className="form-label">Thß╗⌐ tß╗▒</label><input {...register('order')} type="number" className="form-input" /></div>
+           </div>
+-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
++          <div className="grid-split-2" style={{ gap: '1rem' }}>
+             <div className="form-group"><label className="form-label">M├┤ tß║ú (VI)</label><textarea {...register('descriptionVi')} className="form-textarea" rows={3} /></div>
+             <div className="form-group"><label className="form-label">Description (EN)</label><textarea {...register('descriptionEn')} className="form-textarea" rows={3} /></div>
+           </div>
+@@ -80,7 +81,7 @@ function CourseModal({ course, onClose, onSave }) {
+           <div className="form-group" style={{ background: 'rgba(255,107,0,0.05)', padding: '1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255,107,0,0.2)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+             <div>
+               <label className="form-label" style={{ color: 'var(--color-primary)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+-                ≡ƒöÆ Link T├ái liß╗çu Bß║úo mß║¡t (Gß╗¡i qua Email cho ng╞░ß╗¥i d├╣ng)
++                ∩┐╜x Link T├ái li∩┐╜!u Bß║úo mß║¡t (Gß╗¡i qua Email cho ng╞░ß╗¥i d├╣ng)
+               </label>
+               <input
+                 {...register('driveUrl')}
+@@ -89,13 +90,13 @@ function CourseModal({ course, onClose, onSave }) {
+                 style={{ background: 'var(--color-bg)' }}
+               />
+               <span style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', marginTop: '0.35rem', display: 'block' }}>
+-                ΓÜá∩╕Å Link n├áy ─æ╞░ß╗úc <strong>bß║úo mß║¡t tuyß╗çt ─æß╗æi</strong> v├á <strong>KH├öNG</strong> hiß╗ân thß╗ï c├┤ng khai ra FE. Hß╗ç thß╗æng sß║╜ tß╗▒ ─æß╗Öng gß╗¡i email chß╗⌐a link n├áy tß╗¢i email cß╗ºa kh├ích h├áng khi hß╗ì bß║Ñm <em>"Nhß║¡n t├ái liß╗çu"</em>.
++                ∩┐╜a∩┐╜∩╕Å Link n├áy ∩┐╜╞░ß╗úc <strong>bß║úo mß║¡t tuy∩┐╜!t ∩┐╜∩┐╜i</strong> v├á <strong>KH∩┐╜NG</strong> hiß╗Æn th∩┐╜9 c├┤ng khai ra FE. H∩┐╜! th∩┐╜ng sß║╜ tß╗▒ ∩┐╜∩┐╜"ng gß╗¡i email chß╗⌐a link n├áy t∩┐╜:i email cß╗ºa kh├ích h├áng khi hß╗ì bß║Ñm <em>"Nhß║¡n t├ái li∩┐╜!u"</em>.
+               </span>
+             </div>
+ 
+             <div style={{ borderTop: '1px dashed rgba(255,107,0,0.2)', paddingTop: '0.85rem' }}>
+               <label className="form-label" style={{ color: '#FFB380', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+-                ≡ƒöæ Mß║¡t khß║⌐u giß║úi n├⌐n file (Zip / Rar Password)
++                ∩┐╜x Mß║¡t khß║⌐u giß║úi n├⌐n file (Zip / Rar Password)
+               </label>
+               <input
+                 {...register('zipPassword')}
+@@ -104,7 +105,7 @@ function CourseModal({ course, onClose, onSave }) {
+                 style={{ background: 'var(--color-bg)' }}
+               />
+               <span style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', marginTop: '0.35rem', display: 'block' }}>
+-                ≡ƒÆí Nß║┐u nhß║¡p mß║¡t khß║⌐u giß║úi n├⌐n, hß╗ç thß╗æng sß║╜ tß╗▒ ─æß╗Öng gß╗¡i k├¿m mß║¡t khß║⌐u n├áy trong Email c├╣ng vß╗¢i link tß║úi.
++                ∩┐╜x∩┐╜ Nß║┐u nhß║¡p mß║¡t khß║⌐u giß║úi n├⌐n, h∩┐╜! th∩┐╜ng sß║╜ tß╗▒ ∩┐╜∩┐╜"ng gß╗¡i k├¿m mß║¡t khß║⌐u n├áy trong Email c├╣ng v∩┐╜:i link tß║úi.
+               </span>
+             </div>
+           </div>
+@@ -112,7 +113,7 @@ function CourseModal({ course, onClose, onSave }) {
+           {/* Specifications */}
+           <div>
+             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+-              <label className="form-label" style={{ margin: 0 }}>Chi tiß║┐t t├ái liß╗çu (Dung l╞░ß╗úng, ─Éß╗ïnh dß║íng...)</label>
++              <label className="form-label" style={{ margin: 0 }}>Chi tiß║┐t t├ái li∩┐╜!u (Dung l╞░ß╗úng, ─É∩┐╜9nh dß║íng...)</label>
+               <button type="button" onClick={addSpec} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--color-primary)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 }}>
+                 <PlusCircle size={15} /> Th├¬m chi tiß║┐t
+               </button>
+@@ -122,7 +123,7 @@ function CourseModal({ course, onClose, onSave }) {
+                 <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: '0.5rem', alignItems: 'center' }}>
+                   <input value={spec.labelVi} onChange={e => updateSpec(i, 'labelVi', e.target.value)} className="form-input" placeholder="Nh├ún (VI)" style={{ fontSize: '0.85rem', padding: '0.5rem 0.75rem' }} />
+                   <input value={spec.labelEn} onChange={e => updateSpec(i, 'labelEn', e.target.value)} className="form-input" placeholder="Label (EN)" style={{ fontSize: '0.85rem', padding: '0.5rem 0.75rem' }} />
+-                  <input value={spec.value} onChange={e => updateSpec(i, 'value', e.target.value)} className="form-input" placeholder="Gi├í trß╗ï" style={{ fontSize: '0.85rem', padding: '0.5rem 0.75rem' }} />
++                  <input value={spec.value} onChange={e => updateSpec(i, 'value', e.target.value)} className="form-input" placeholder="Gi├í tr∩┐╜9" style={{ fontSize: '0.85rem', padding: '0.5rem 0.75rem' }} />
+                   <button type="button" onClick={() => removeSpec(i)} style={{ color: '#EF4444', background: 'none', border: 'none', cursor: 'pointer' }}><MinusCircle size={18} /></button>
+                 </div>
+               ))}
+@@ -136,21 +137,30 @@ function CourseModal({ course, onClose, onSave }) {
+               <Upload size={15} />{uploading ? '─Éang tß║úi...' : 'Tß║úi ß║únh'}
+               <input type="file" multiple accept="image/*" onChange={handleImgUpload} style={{ display: 'none' }} disabled={uploading} />
+             </label>
+-            {images.length > 0 && <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.625rem' }}>{images.map((img, i) => <div key={i} style={{ position: 'relative' }}><img src={`/uploads/images/${img}`} alt={i} style={{ width: 72, height: 72, objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} /><button type="button" onClick={() => setImages(p => p.filter((_, idx) => idx !== i))} style={{ position: 'absolute', top: -6, right: -6, width: 18, height: 18, background: '#EF4444', border: 'none', borderRadius: '50%', color: '#fff', cursor: 'pointer', fontSize: '10px' }}>├ù</button></div>)}</div>}
++            {images.length > 0 && <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.625rem' }}>{images.map((img, i) => <div key={i} style={{ position: 'relative' }}><img src={`/uploads/images/${img}`} alt={i} style={{ width: 72, height: 72, objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} /><button type="button" onClick={() => setImages(p => p.filter((_, idx) => idx !== i))} style={{ position: 'absolute', top: -6, right: -6, width: 18, height: 18, background: '#EF4444', border: 'none', borderRadius: '50%', color: '#fff', cursor: 'pointer', fontSize: '10px' }}>∩┐╜</button></div>)}</div>}
+           </div>
+ 
+           {/* Catalog */}
+           <div className="form-group">
+-            <label className="form-label">T├ái liß╗çu ─æ├¡nh k├¿m (PDF)</label>
++            <label className="form-label">T├ái li∩┐╜!u ∩┐╜├¡nh k├¿m (PDF)</label>
+             <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'var(--color-surface)', border: '1px dashed var(--color-border-muted)', borderRadius: 'var(--radius-md)', padding: '0.6rem 1rem', cursor: 'pointer', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
+-              <Upload size={15} />{uploadingCatalog ? '─Éang tß║úi...' : (catalogName ? `Γ£ô ${catalogName.substring(0,20)}...` : 'Tß║úi File')}
++              <Upload size={15} />{uploadingCatalog ? '─Éang tß║úi...' : (catalogName ? `∩┐╜S ${catalogName.substring(0,20)}...` : 'Tß║úi File')}
+               <input type="file" accept="application/pdf" onChange={handleCatalogUpload} style={{ display: 'none' }} disabled={uploadingCatalog} />
+             </label>
+           </div>
+ 
+-          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+-            <button type="button" onClick={onClose} className="btn btn-ghost">Huß╗╖</button>
+-            <button type="submit" className="btn btn-primary">L╞░u T├ái liß╗çu</button>
++          <div style={{ display: "flex", gap: "0.75rem", justifyContent: "flex-end", pointerEvents: "auto", marginTop: '1.5rem' }}>
++            {mode === 'view' ? (
++              <>
++                <button type="button" onClick={() => onDelete(course._id)} className="btn btn-ghost" style={{ color: '#EF4444' }}>Xo├í</button>
++                <button type="button" onClick={(e) => { e.preventDefault(); setMode('edit'); }} className="btn btn-primary">Sß╗¡a</button>
++              </>
++            ) : (
++              <>
++                <button type="button" onClick={onClose} className="btn btn-ghost">Huß╗╖</button>
++                <button type="submit" className="btn btn-primary">L╞░u T├ái li∩┐╜!u</button>
++              </>
++            )}
+           </div>
+         </form>
+       </div>
+@@ -167,42 +177,37 @@ export default function AdminCourses() {
+   const updateMut = useMutation({ mutationFn: ({ id, data }) => adminUpdateCourse(id, data), onSuccess: () => { toast.success('─É├ú cß║¡p nhß║¡t!'); invalidate(); setModal(null); } });
+   const deleteMut = useMutation({ mutationFn: adminDeleteCourse, onSuccess: () => { toast.success('─É├ú xo├í!'); invalidate(); } });
+   const handleSave = (data) => { if (modal?._id) updateMut.mutate({ id: modal._id, data }); else createMut.mutate(data); };
++  const handleDelete = (id) => { if (confirm('Xo├í t├ái li∩┐╜!u n├áy?')) { deleteMut.mutate(id); setModal(null); } };
+ 
+   return (
+     <div>
+       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+-        <div><h1 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '0.25rem' }}>Quß║ún l├╜ T├ái liß╗çu</h1><p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Danh s├ích t├ái liß╗çu tß╗▒ ─æß╗Öng h├│a</p></div>
+-        <button onClick={() => setModal('create')} className="btn btn-primary"><Plus size={16} /> Th├¬m T├ái liß╗çu</button>
++        <div><h1 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '0.25rem' }}>Quß║ún l├╜ T├ái li∩┐╜!u</h1><p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Danh s├ích t├ái li∩┐╜!u tß╗▒ ∩┐╜∩┐╜"ng h├│a</p></div>
++        <button onClick={() => setModal('create')} className="btn btn-primary"><Plus size={16} /> Th├¬m T├ái li∩┐╜!u</button>
+       </div>
+-      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
++      <div className="table-responsive" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
+         <table className="admin-table">
+-          <thead><tr><th>H├¼nh</th><th>T├¬n t├ái liß╗çu</th><th>Danh mß╗Ñc</th><th>Chi tiß║┐t</th><th>File</th><th>Thß╗⌐ tß╗▒</th><th>Trß║íng th├íi</th><th>Thao t├íc</th></tr></thead>
++          <thead><tr><th>H├¼nh</th><th>T├¬n t├ái li∩┐╜!u</th><th>Danh mß╗Ñc</th><th>Chi tiß║┐t</th><th>Trß║íng th├íi</th></tr></thead>
+           <tbody>
+-            {isLoading && <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>─Éang tß║úi...</td></tr>}
++            {isLoading && <tr><td colSpan={5} style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>─Éang tß║úi...</td></tr>}
+             {courses.map(p => (
+-              <tr key={p._id}>
++              <tr key={p._id} onClick={() => setModal(p)} style={{ cursor: 'pointer' }}>
+                 <td>{p.images?.[0] ? <img src={`/uploads/images/${p.images[0]}`} alt={p.nameVi} style={{ width: 56, height: 56, objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} /> : <div style={{ width: 56, height: 56, background: 'var(--color-bg-3)', borderRadius: 'var(--radius-sm)' }} />}</td>
+                 <td><p style={{ fontWeight: 600, color: '#fff', fontSize: '0.875rem', marginBottom: '0.15rem' }}>{p.nameVi}</p><p style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem' }}>{p.nameEn}</p></td>
+-                <td style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>{p.categoryVi || 'ΓÇö'}</td>
++                <td style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>{p.categoryVi || '∩┐╜'}</td>
+                 <td style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>{p.specifications?.length || 0} th├┤ng tin</td>
+-                <td>{p.catalogUrl ? <span style={{ color: 'var(--color-success)', fontSize: '0.8rem' }}>Γ£ô C├│</span> : <span style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>ΓÇö</span>}</td>
+-                <td style={{ color: 'var(--color-text-muted)' }}>{p.order}</td>
+                 <td>
+-                  <button onClick={() => updateMut.mutate({ id: p._id, data: { isActive: !p.isActive } })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: p.isActive ? 'var(--color-success)' : 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', fontWeight: 600 }}>
+-                    {p.isActive ? <><ToggleRight size={20} /> Hiß╗çn</> : <><ToggleLeft size={20} /> ß║¿n</>}
++                  <button onClick={(e) => { e.stopPropagation(); updateMut.mutate({ id: p._id, data: { isActive: !p.isActive } }); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: p.isActive ? 'var(--color-success)' : '#EF4444', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', fontWeight: 600 }}>
++                    {p.isActive ? <><Eye size={20} /> Hi∩┐╜!n</> : <><EyeOff size={20} /> ß║¿n</>}
+                   </button>
+                 </td>
+-                <td><div style={{ display: 'flex', gap: '0.5rem' }}>
+-                  <button onClick={() => setModal(p)} className="btn btn-ghost btn-sm"><Pencil size={14} /></button>
+-                  <button onClick={() => { if (confirm('Xo├í t├ái liß╗çu n├áy?')) deleteMut.mutate(p._id); }} className="btn btn-sm" style={{ background: 'rgba(239,68,68,0.1)', color: '#EF4444', border: '1px solid rgba(239,68,68,0.3)' }}><Trash2 size={14} /></button>
+-                </div></td>
+               </tr>
+             ))}
+-            {!isLoading && courses.length === 0 && <tr><td colSpan={8} style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: '3rem' }}>Ch╞░a c├│ t├ái liß╗çu n├áo</td></tr>}
++            {!isLoading && courses.length === 0 && <tr><td colSpan={5} style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: '3rem' }}>Ch╞░a c├│ t├ái li∩┐╜!u n├áo</td></tr>}
+           </tbody>
+         </table>
+       </div>
+-      {modal && <CourseModal course={modal === 'create' ? null : modal} onClose={() => setModal(null)} onSave={handleSave} />}
++      {modal && <CourseModal course={modal === 'create' ? null : modal} onClose={() => setModal(null)} onSave={handleSave} onDelete={handleDelete} />}
+     </div>
+   );
+ }
+diff --git a/frontend/src/app/admin/(panel)/dashboard/page.jsx b/frontend/src/app/admin/(panel)/dashboard/page.jsx
+index d07f771..1697704 100644
+--- a/frontend/src/app/admin/(panel)/dashboard/page.jsx
++++ b/frontend/src/app/admin/(panel)/dashboard/page.jsx
+@@ -39,7 +39,7 @@ export default function AdminDashboard() {
+       </div>
+ 
+       {/* Stat Cards */}
+-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.25rem', marginBottom: '3rem' }}>
++      <div className="dashboard-stats-grid">
+         {cards.map((card, i) => (
+           <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
+             <Link href={card.link} style={{ display: 'block', textDecoration: 'none' }}>
+@@ -57,7 +57,7 @@ export default function AdminDashboard() {
+                   )}
+                 </div>
+                 <div style={{ fontSize: '2.5rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: card.color, lineHeight: 1, marginBottom: '0.375rem' }}>
+-                  {isLoading ? 'ΓÇö' : (card.total || card.value || 0)}
++                  {isLoading ? '...' : (card.total || card.value || 0)}
+                 </div>
+                 <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', margin: 0 }}>{card.label}</p>
+               </div>
+@@ -68,7 +68,7 @@ export default function AdminDashboard() {
+ 
+       {/* Quick Links */}
+       <h2 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.25rem', fontSize: '1.2rem' }}>Truy cß║¡p nhanh</h2>
+-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
++      <div className="dashboard-links-grid">
+         {quickLinks.map((link, i) => (
+           <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.06 }}>
+             <Link href={link.to} style={{ display: 'block', textDecoration: 'none' }}>
+diff --git a/frontend/src/app/admin/(panel)/layout.jsx b/frontend/src/app/admin/(panel)/layout.jsx
+index 8a3d68a..96e9d40 100644
+--- a/frontend/src/app/admin/(panel)/layout.jsx
++++ b/frontend/src/app/admin/(panel)/layout.jsx
+@@ -9,7 +9,7 @@ import { getCompany } from '../../../services/api';
+ import { 
+   LayoutDashboard, Image, Building2, Wrench, FolderOpen, 
+   Package, Users, MessageSquare, LogOut, ChevronRight, Handshake, BookOpen,
+-  User
++  User, Menu, X
+ } from 'lucide-react';
+ import '../../../components/layout/AdminLayout.css';
+ 
+@@ -35,6 +35,7 @@ export default function AdminPanelLayout({ children }) {
+   const appName = company?.nameVi || company?.nameEn || 'THANHTDH';
+ 
+   const [mounted, setMounted] = useState(false);
++  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+ 
+   useEffect(() => {
+     setMounted(true);
+@@ -54,8 +55,24 @@ export default function AdminPanelLayout({ children }) {
+ 
+   return (
+     <div className="admin-layout">
++      {/* Mobile Header */}
++      <div className="admin-mobile-header">
++        <div className="admin-mobile-header__brand">
++          <div className="footer__logo-icon" style={{ width: 28, height: 28, fontSize: '0.85rem' }}><span>{appName[0]?.toUpperCase()}</span></div>
++          <span>{appName}</span>
++        </div>
++        <button className="admin-mobile-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
++          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
++        </button>
++      </div>
++
++      {/* Overlay for mobile */}
++      {isMobileMenuOpen && (
++        <div className="admin-sidebar-overlay" onClick={() => setIsMobileMenuOpen(false)}></div>
++      )}
++
+       {/* Sidebar */}
+-      <aside className="admin-sidebar">
++      <aside className={`admin-sidebar ${isMobileMenuOpen ? 'admin-sidebar--open' : ''}`}>
+         {/* Logo */}
+         <div className="admin-sidebar__logo">
+           <div className="footer__logo-icon" style={{ width: 32, height: 32, fontSize: '1rem' }}><span>{appName[0]?.toUpperCase()}</span></div>
+@@ -71,6 +88,7 @@ export default function AdminPanelLayout({ children }) {
+               <Link
+                 key={link.href}
+                 href={link.href}
++                onClick={() => setIsMobileMenuOpen(false)}
+                 className={`admin-sidebar__link ${isActive ? 'admin-sidebar__link--active' : ''}`}
+               >
+                 <link.icon size={18} />
+diff --git a/frontend/src/app/admin/(panel)/partners/page.jsx b/frontend/src/app/admin/(panel)/partners/page.jsx
+index 2876129..bb3e0a4 100644
+--- a/frontend/src/app/admin/(panel)/partners/page.jsx
++++ b/frontend/src/app/admin/(panel)/partners/page.jsx
+@@ -4,7 +4,7 @@ import { useState } from 'react';
+ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+ import { useForm } from 'react-hook-form';
+ import toast from 'react-hot-toast';
+-import { Plus, Pencil, Trash2, X, Upload, Globe, ToggleLeft, ToggleRight } from 'lucide-react';
++import { Plus, Pencil, Trash2, X, Upload, Globe, EyeOff, Eye } from 'lucide-react';
+ import { adminGetPartners, adminCreatePartner, adminUpdatePartner, adminDeletePartner, uploadFile } from '../../../../services/api';
+ 
+ function PartnerModal({ partner, onClose, onSave }) {
+@@ -94,8 +94,8 @@ export default function AdminPartners() {
+                 <td>{p.website ? <a href={p.website} target="_blank" rel="noreferrer" style={{ color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem' }}><Globe size={13} />{p.website.replace('https://', '').substring(0, 25)}</a> : <span style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>ΓÇö</span>}</td>
+                 <td style={{ color: 'var(--color-text-muted)' }}>{p.order}</td>
+                 <td>
+-                  <button onClick={() => updateMut.mutate({ id: p._id, data: { isActive: !p.isActive } })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: p.isActive ? 'var(--color-success)' : 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', fontWeight: 600 }}>
+-                    {p.isActive ? <><ToggleRight size={20} /> Hiß╗çn</> : <><ToggleLeft size={20} /> ß║¿n</>}
++                  <button onClick={() => updateMut.mutate({ id: p._id, data: { isActive: !p.isActive } })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: p.isActive ? 'var(--color-success)' : '#EF4444', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', fontWeight: 600 }}>
++                    {p.isActive ? <><Eye size={20} /> Hiß╗çn</> : <><EyeOff size={20} /> ß║¿n</>}
+                   </button>
+                 </td>
+                 <td><div style={{ display: 'flex', gap: '0.5rem' }}>
+diff --git a/frontend/src/app/admin/(panel)/products/page.jsx b/frontend/src/app/admin/(panel)/products/page.jsx
+index 0e55139..a58a738 100644
+--- a/frontend/src/app/admin/(panel)/products/page.jsx
++++ b/frontend/src/app/admin/(panel)/products/page.jsx
+@@ -4,7 +4,7 @@ import { useState } from 'react';
+ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+ import { useForm } from 'react-hook-form';
+ import toast from 'react-hot-toast';
+-import { Plus, Pencil, Trash2, X, Upload, PlusCircle, MinusCircle, ToggleLeft, ToggleRight } from 'lucide-react';
++import { Plus, Pencil, Trash2, X, Upload, PlusCircle, MinusCircle, EyeOff, Eye } from 'lucide-react';
+ import { adminGetProducts, adminCreateProduct, adminUpdateProduct, adminDeleteProduct, uploadFile, uploadMultiple } from '../../../../services/api';
+ 
+ function ProductModal({ product, onClose, onSave }) {
+@@ -60,7 +60,7 @@ function ProductModal({ product, onClose, onSave }) {
+         <button onClick={onClose} style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: '50%', width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--color-text-muted)' }}><X size={16} /></button>
+         <h3 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.75rem' }}>{product ? 'Sß╗¡a Sß║ún phß║⌐m' : 'Th├¬m Sß║ún phß║⌐m'}</h3>
+         <form onSubmit={handleSubmit(d => onSave({ ...d, specifications: specs, images, catalogUrl: catalogName, order: Number(d.order) }))} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
++          <div className="grid-split-2" style={{ gap: '1rem' }}>
+             <div className="form-group"><label className="form-label">T├¬n SP (VI) *</label><input {...register('nameVi', { required: true })} className="form-input" />{errors.nameVi && <span className="form-error">Bß║»t buß╗Öc</span>}</div>
+             <div className="form-group"><label className="form-label">Product Name (EN) *</label><input {...register('nameEn', { required: true })} className="form-input" />{errors.nameEn && <span className="form-error">Required</span>}</div>
+           </div>
+@@ -69,7 +69,7 @@ function ProductModal({ product, onClose, onSave }) {
+             <div className="form-group"><label className="form-label">Category (EN)</label><input {...register('categoryEn')} className="form-input" placeholder="Industrial Camera" /></div>
+             <div className="form-group"><label className="form-label">Thß╗⌐ tß╗▒</label><input {...register('order')} type="number" className="form-input" /></div>
+           </div>
+-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
++          <div className="grid-split-2" style={{ gap: '1rem' }}>
+             <div className="form-group"><label className="form-label">M├┤ tß║ú (VI)</label><textarea {...register('descriptionVi')} className="form-textarea" rows={3} /></div>
+             <div className="form-group"><label className="form-label">Description (EN)</label><textarea {...register('descriptionEn')} className="form-textarea" rows={3} /></div>
+           </div>
+@@ -153,8 +153,8 @@ export default function AdminProducts() {
+                 <td>{p.catalogUrl ? <span style={{ color: 'var(--color-success)', fontSize: '0.8rem' }}>Γ£ô C├│</span> : <span style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>ΓÇö</span>}</td>
+                 <td style={{ color: 'var(--color-text-muted)' }}>{p.order}</td>
+                 <td>
+-                  <button onClick={() => updateMut.mutate({ id: p._id, data: { isActive: !p.isActive } })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: p.isActive ? 'var(--color-success)' : 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', fontWeight: 600 }}>
+-                    {p.isActive ? <><ToggleRight size={20} /> Hiß╗çn</> : <><ToggleLeft size={20} /> ß║¿n</>}
++                  <button onClick={() => updateMut.mutate({ id: p._id, data: { isActive: !p.isActive } })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: p.isActive ? 'var(--color-success)' : '#EF4444', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', fontWeight: 600 }}>
++                    {p.isActive ? <><Eye size={20} /> Hiß╗çn</> : <><EyeOff size={20} /> ß║¿n</>}
+                   </button>
+                 </td>
+                 <td><div style={{ display: 'flex', gap: '0.5rem' }}>
+diff --git a/frontend/src/app/admin/(panel)/projects/page.jsx b/frontend/src/app/admin/(panel)/projects/page.jsx
+index ee88e29..e1994da 100644
+--- a/frontend/src/app/admin/(panel)/projects/page.jsx
++++ b/frontend/src/app/admin/(panel)/projects/page.jsx
+@@ -7,7 +7,8 @@ import toast from 'react-hot-toast';
+ import { Plus, Pencil, Trash2, X, Shield, Star, Upload } from 'lucide-react';
+ import { adminGetProjects, adminCreateProject, adminUpdateProject, adminDeleteProject, uploadMultiple } from '../../../../services/api';
+ 
+-function ProjectModal({ project, onClose, onSave }) {
++function ProjectModal({ project, onClose, onSave, onDelete }) {
++  const [mode, setMode] = useState(project ? 'view' : 'edit');
+   const { register, handleSubmit, formState: { errors } } = useForm({
+     defaultValues: project ? {
+       titleVi: project.titleVi, titleEn: project.titleEn,
+@@ -44,34 +45,37 @@ function ProjectModal({ project, onClose, onSave }) {
+ 
+   return (
+     <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', backdropFilter: 'blur(8px)' }}>
+-      <div style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', padding: '2.25rem', width: '100%', maxWidth: 680, position: 'relative', maxHeight: '92vh', overflowY: 'auto' }}>
+-        <button onClick={onClose} style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: '50%', width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--color-text-muted)' }}><X size={16} /></button>
+-        <h3 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.75rem' }}>{project ? 'Sß╗¡a Dß╗▒ ├ín' : 'Th├¬m Dß╗▒ ├ín'}</h3>
+-        <form onSubmit={handleSubmit(handleSubmitForm)} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
++      <div style={{ background: 'var(--color-bg-2)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', padding: 0, width: '100%', maxWidth: 680, position: 'relative', maxHeight: '92vh', display: 'flex', flexDirection: 'column' }}>
++<button onClick={onClose} style={{ position: 'absolute', top: '0.75rem', right: '0.75rem', background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: '50%', width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 10, color: 'var(--color-text-muted)' }}><X size={16} /></button>
++<div style={{ padding: '2.25rem', overflowY: 'auto', flex: 1 }}>
++        <h3 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.75rem' }}>{mode === 'view' ? 'Chi Tiß║┐t Dß╗▒ ├ün' : (project ? 'Sß╗¡a Dß╗▒ ├ün' : 'Th├¬m Dß╗▒ ├ün')}</h3>
++        <form onSubmit={handleSubmit(handleSubmitForm)} className={mode === 'view' ? 'read-only-form' : ''} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
++          <div className="grid-split-2" style={{ gap: '1rem' }}>
+             <div className="form-group"><label className="form-label">T├¬n dß╗▒ ├ín (VI) *</label><input {...register('titleVi', { required: true })} className="form-input" />{errors.titleVi && <span className="form-error">Bß║»t buß╗Öc</span>}</div>
+             <div className="form-group"><label className="form-label">Project Title (EN) *</label><input {...register('titleEn', { required: true })} className="form-input" />{errors.titleEn && <span className="form-error">Required</span>}</div>
+           </div>
+-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: '1rem' }}>
++          <div className="grid-split-2" style={{ gap: '1rem' }}>
+             <div className="form-group"><label className="form-label">Kh├ích h├áng</label><input {...register('client')} className="form-input" placeholder="Samsung, Vincom..." /></div>
++            <div className="form-group"><label className="form-label">Thß╗⌐ tß╗▒</label><input {...register('order')} type="number" className="form-input" /></div>
++          </div>
++          <div className="grid-split-2" style={{ gap: '1rem' }}>
+             <div className="form-group"><label className="form-label">Ng├ánh (VI)</label><input {...register('industryVi')} className="form-input" placeholder="─Éiß╗çn tß╗¡" /></div>
+             <div className="form-group"><label className="form-label">Industry (EN)</label><input {...register('industryEn')} className="form-input" placeholder="Electronics" /></div>
+-            <div className="form-group"><label className="form-label">Thß╗⌐ tß╗▒</label><input {...register('order')} type="number" className="form-input" style={{ width: 80 }} /></div>
+           </div>
+           <div className="form-group"><label className="form-label">C├┤ng nghß╗ç (ph├ón c├ích bß║▒ng dß║Ñu phß║⌐y)</label><input {...register('technologies')} className="form-input" placeholder="PLC, Robot Integration, Machine Vision" /></div>
+-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
++          <div className="grid-split-2" style={{ gap: '1rem' }}>
+             <div className="form-group"><label className="form-label">M├┤ tß║ú (VI)</label><textarea {...register('descriptionVi')} className="form-textarea" rows={3} /></div>
+             <div className="form-group"><label className="form-label">Description (EN)</label><textarea {...register('descriptionEn')} className="form-textarea" rows={3} /></div>
+           </div>
+-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
++          <div className="grid-split-2" style={{ gap: '1rem' }}>
+             <div className="form-group"><label className="form-label">Th├ích thß╗⌐c (VI)</label><textarea {...register('challengeVi')} className="form-textarea" rows={2} /></div>
+             <div className="form-group"><label className="form-label">Challenge (EN)</label><textarea {...register('challengeEn')} className="form-textarea" rows={2} /></div>
+           </div>
+-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
++          <div className="grid-split-2" style={{ gap: '1rem' }}>
+             <div className="form-group"><label className="form-label">Giß║úi ph├íp (VI)</label><textarea {...register('solutionVi')} className="form-textarea" rows={2} /></div>
+             <div className="form-group"><label className="form-label">Solution (EN)</label><textarea {...register('solutionEn')} className="form-textarea" rows={2} /></div>
+           </div>
+-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
++          <div className="grid-split-2" style={{ gap: '1rem' }}>
+             <div className="form-group"><label className="form-label">Kß║┐t quß║ú (VI)</label><textarea {...register('resultVi')} className="form-textarea" rows={2} /></div>
+             <div className="form-group"><label className="form-label">Result (EN)</label><textarea {...register('resultEn')} className="form-textarea" rows={2} /></div>
+           </div>
+@@ -106,13 +110,23 @@ function ProjectModal({ project, onClose, onSave }) {
+               </div>
+             )}
+           </div>
+-          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+-            <button type="button" onClick={onClose} className="btn btn-ghost">Huß╗╖</button>
+-            <button type="submit" className="btn btn-primary">L╞░u Dß╗▒ ├ín</button>
++          <div style={{ display: "flex", gap: "0.75rem", justifyContent: "flex-end", pointerEvents: "auto", marginTop: '1.5rem' }}>
++            {mode === 'view' ? (
++              <>
++                <button type="button" onClick={() => onDelete(project._id)} className="btn btn-ghost" style={{ color: '#EF4444' }}>Xo├í</button>
++                <button type="button" onClick={(e) => { e.preventDefault(); setMode('edit'); }} className="btn btn-primary">Sß╗¡a</button>
++              </>
++            ) : (
++              <>
++                <button type="button" onClick={onClose} className="btn btn-ghost">Huß╗╖</button>
++                <button type="submit" className="btn btn-primary">L╞░u Dß╗▒ ├ün</button>
++              </>
++            )}
+           </div>
+         </form>
+       </div>
+     </div>
++</div>
+   );
+ }
+ 
+@@ -125,20 +139,21 @@ export default function AdminProjects() {
+   const updateMut = useMutation({ mutationFn: ({ id, data }) => adminUpdateProject(id, data), onSuccess: () => { toast.success('─É├ú cß║¡p nhß║¡t!'); invalidate(); setModal(null); } });
+   const deleteMut = useMutation({ mutationFn: adminDeleteProject, onSuccess: () => { toast.success('─É├ú xo├í!'); invalidate(); } });
+   const handleSave = (data) => { if (modal?._id) updateMut.mutate({ id: modal._id, data }); else createMut.mutate(data); };
++  const handleDelete = (id) => { if (confirm('Xo├í dß╗▒ ├ín n├áy?')) { deleteMut.mutate(id); setModal(null); } };
+ 
+   return (
+     <div>
+-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+-        <div><h1 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '0.25rem' }}>Quß║ún l├╜ Dß╗▒ ├ín</h1><p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Dß╗▒ ├ín NDA sß║╜ bß╗ï ß║⌐n khß╗Åi trang c├┤ng khai</p></div>
+-        <button onClick={() => setModal('create')} className="btn btn-primary"><Plus size={16} /> Th├¬m Dß╗▒ ├ín</button>
++      <div className="admin-page-header">
++        <div><h1 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '0.25rem' }}>Quß║ún l├╜ Dß╗▒ ├ün</h1><p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Dß╗▒ ├ün NDA sß║╜ bß╗ï ß║⌐n khß╗Åi trang c├┤ng khai</p></div>
++        <button onClick={() => setModal('create')} className="btn btn-primary"><Plus size={16} /> Th├¬m Dß╗▒ ├ün</button>
+       </div>
+-      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
++      <div className="table-responsive" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
+         <table className="admin-table">
+-          <thead><tr><th>T├¬n dß╗▒ ├ín</th><th>Kh├ích h├áng</th><th>Ng├ánh</th><th>Thß╗⌐ tß╗▒</th><th>Tags</th><th>Thao t├íc</th></tr></thead>
++          <thead><tr><th>T├¬n dß╗▒ ├ín</th><th>Kh├ích h├áng</th><th>Ng├ánh</th><th>Thß╗⌐ tß╗▒</th><th>Tags</th></tr></thead>
+           <tbody>
+             {isLoading && <tr><td colSpan={5} style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>─Éang tß║úi...</td></tr>}
+             {projects.map(p => (
+-              <tr key={p._id}>
++              <tr key={p._id} onClick={() => setModal(p)} style={{ cursor: 'pointer' }}>
+                 <td>
+                   <p style={{ fontWeight: 600, color: '#fff', marginBottom: '0.15rem', fontSize: '0.875rem' }}>{p.titleVi}</p>
+                   <p style={{ color: 'var(--color-text-muted)', fontSize: '0.78rem' }}>{p.titleEn}</p>
+@@ -153,19 +168,13 @@ export default function AdminProjects() {
+                     {!p.isActive && <span style={{ background: 'rgba(100,100,100,0.15)', color: 'var(--color-text-muted)', border: '1px solid var(--color-border-muted)', fontSize: '0.7rem', padding: '0.15rem 0.5rem', borderRadius: 'var(--radius-full)' }}>ß║¿n</span>}
+                   </div>
+                 </td>
+-                <td>
+-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+-                    <button onClick={() => setModal(p)} className="btn btn-ghost btn-sm"><Pencil size={14} /></button>
+-                    <button onClick={() => { if (confirm('Xo├í dß╗▒ ├ín n├áy?')) deleteMut.mutate(p._id); }} className="btn btn-sm" style={{ background: 'rgba(239,68,68,0.1)', color: '#EF4444', border: '1px solid rgba(239,68,68,0.3)' }}><Trash2 size={14} /></button>
+-                  </div>
+-                </td>
+               </tr>
+             ))}
+-            {!isLoading && projects.length === 0 && <tr><td colSpan={6} style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: '3rem' }}>Ch╞░a c├│ dß╗▒ ├ín n├áo</td></tr>}
++            {!isLoading && projects.length === 0 && <tr><td colSpan={3} style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: '3rem' }}>Ch╞░a c├│ dß╗▒ ├ín n├áo</td></tr>}
+           </tbody>
+         </table>
+       </div>
+-      {modal && <ProjectModal project={modal === 'create' ? null : modal} onClose={() => setModal(null)} onSave={handleSave} />}
++      {modal && <ProjectModal project={modal === 'create' ? null : modal} onClose={() => setModal(null)} onSave={handleSave} onDelete={handleDelete} />}
+     </div>
+   );
+ }
+diff --git a/frontend/src/app/admin/(panel)/services/page.jsx b/frontend/src/app/admin/(panel)/services/page.jsx
+index 2e223d9..bee5320 100644
+--- a/frontend/src/app/admin/(panel)/services/page.jsx
++++ b/frontend/src/app/admin/(panel)/services/page.jsx
+@@ -4,7 +4,7 @@ import { useState } from 'react';
+ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+ import { useForm } from 'react-hook-form';
+ import toast from 'react-hot-toast';
+-import { Plus, Pencil, Trash2, X, ToggleLeft, ToggleRight, Upload } from 'lucide-react';
++import { Plus, Pencil, Trash2, X, EyeOff, Eye, Upload } from 'lucide-react';
+ import { adminGetServices, adminCreateService, adminUpdateService, adminDeleteService, uploadFile, uploadMultiple } from '../../../../services/api';
+ 
+ const ICON_OPTIONS = ['Settings', 'Eye', 'Cpu', 'Zap', 'Truck', 'Monitor', 'Wrench', 'Bot'];
+@@ -56,15 +56,15 @@ function ServiceModal({ service, onClose, onSave }) {
+         <button onClick={onClose} style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'var(--color-surface)', border: '1px solid var(--color-border-muted)', borderRadius: '50%', width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--color-text-muted)' }}><X size={16} /></button>
+         <h3 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.75rem' }}>{service ? 'Sß╗¡a Dß╗ïch vß╗Ñ' : 'Th├¬m Dß╗ïch vß╗Ñ'}</h3>
+         <form onSubmit={handleSubmit(handleSubmitForm)} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
++          <div className="grid-split-2" style={{ gap: '1rem' }}>
+             <div className="form-group"><label className="form-label">T├¬n (VI) *</label><input {...register('nameVi', { required: true })} className="form-input" placeholder="Thiß║┐t kß║┐ m├íy tß╗▒ ─æß╗Öng" />{errors.nameVi && <span className="form-error">Bß║»t buß╗Öc</span>}</div>
+             <div className="form-group"><label className="form-label">T├¬n (EN) *</label><input {...register('nameEn', { required: true })} className="form-input" placeholder="Custom Machine Design" />{errors.nameEn && <span className="form-error">Required</span>}</div>
+           </div>
+-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
++          <div className="grid-split-2" style={{ gap: '1rem' }}>
+             <div className="form-group"><label className="form-label">M├┤ tß║ú (VI)</label><textarea {...register('descriptionVi')} className="form-textarea" rows={3} placeholder="M├┤ tß║ú tiß║┐ng Viß╗çt..." /></div>
+             <div className="form-group"><label className="form-label">M├┤ tß║ú (EN)</label><textarea {...register('descriptionEn')} className="form-textarea" rows={3} placeholder="Description in English..." /></div>
+           </div>
+-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
++          <div className="grid-split-3" style={{ gap: '1rem' }}>
+             <div className="form-group">
+               <label className="form-label">Icon</label>
+               <select {...register('icon')} className="form-select">
+@@ -84,7 +84,7 @@ function ServiceModal({ service, onClose, onSave }) {
+             <label className="form-label">C├┤ng nghß╗ç (c├ích nhau bß║▒ng dß║Ñu phß║⌐y)</label>
+             <input {...register('technologies')} className="form-input" placeholder="PLC, Robot, Siemens, ..." />
+           </div>
+-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
++          <div className="grid-split-2" style={{ gap: '1rem' }}>
+             <div className="form-group"><label className="form-label">T├¡nh n─âng (VI) - mß╗ùi d├▓ng 1 mß╗Ñc</label><textarea {...register('featuresVi')} className="form-textarea" rows={4} placeholder="T├¡nh n─âng 1&#10;T├¡nh n─âng 2" /></div>
+             <div className="form-group"><label className="form-label">Features (EN) - one per line</label><textarea {...register('featuresEn')} className="form-textarea" rows={4} placeholder="Feature 1&#10;Feature 2" /></div>
+           </div>
+@@ -150,8 +150,8 @@ export default function AdminServices() {
+                   <button 
+                     onClick={() => updateMut.mutate({ id: svc._id, data: { isActive: !svc.isActive } })} 
+                     disabled={updateMut.isPending}
+-                    style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: 'none', border: 'none', cursor: 'pointer', color: svc.isActive ? 'var(--color-success)' : 'var(--color-text-muted)', fontSize: '0.8rem', fontWeight: 600 }}>
+-                    {svc.isActive ? <ToggleRight size={20} /> : <ToggleLeft size={20} />}
++                    style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: 'none', border: 'none', cursor: 'pointer', color: svc.isActive ? 'var(--color-success)' : '#EF4444', fontSize: '0.8rem', fontWeight: 600 }}>
++                    {svc.isActive ? <Eye size={20} /> : <EyeOff size={20} />}
+                     {svc.isActive ? 'Hiß╗çn' : 'ß║¿n'}
+                   </button>
+                 </td>
+diff --git a/frontend/src/app/admin/(panel)/users/page.jsx b/frontend/src/app/admin/(panel)/users/page.jsx
+index 4f20f82..62ee20d 100644
+--- a/frontend/src/app/admin/(panel)/users/page.jsx
++++ b/frontend/src/app/admin/(panel)/users/page.jsx
+@@ -3,7 +3,7 @@
+ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+ import { motion } from 'framer-motion';
+ import toast from 'react-hot-toast';
+-import { Users, ToggleLeft, ToggleRight, Building2, Phone } from 'lucide-react';
++import { Users, EyeOff, Eye, Building2, Phone } from 'lucide-react';
+ import { adminGetUsers, adminToggleUser } from '../../../../services/api';
+ 
+ export default function AdminUsers() {
+@@ -95,8 +95,8 @@ export default function AdminUsers() {
+                 </td>
+                 <td>
+                   <button onClick={() => toggleMut.mutate(user._id)} disabled={toggleMut.isPending}
+-                    style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: 'none', border: 'none', cursor: 'pointer', color: user.isActive ? 'var(--color-success)' : 'var(--color-text-muted)', fontSize: '0.8rem', fontWeight: 600 }}>
+-                    {user.isActive ? <ToggleRight size={20} /> : <ToggleLeft size={20} />}
++                    style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: 'none', border: 'none', cursor: 'pointer', color: user.isActive ? 'var(--color-success)' : '#EF4444', fontSize: '0.8rem', fontWeight: 600 }}>
++                    {user.isActive ? <Eye size={20} /> : <EyeOff size={20} />}
+                     {user.isActive ? 'Hoß║ít ─æß╗Öng' : '─É├ú kho├í'}
+                   </button>
+                 </td>

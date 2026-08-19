@@ -39,7 +39,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stat Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.25rem', marginBottom: '3rem' }}>
+      <div className="dashboard-stats-grid">
         {cards.map((card, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
             <Link href={card.link} style={{ display: 'block', textDecoration: 'none' }}>
@@ -68,7 +68,7 @@ export default function AdminDashboard() {
 
       {/* Quick Links */}
       <h2 style={{ fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: '1.25rem', fontSize: '1.2rem' }}>Truy cập nhanh</h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+      <div className="dashboard-links-grid">
         {quickLinks.map((link, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.06 }}>
             <Link href={link.to} style={{ display: 'block', textDecoration: 'none' }}>

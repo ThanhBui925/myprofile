@@ -55,7 +55,7 @@ export default function Footer() {
           </div>
 
           <div className="footer__col">
-            <h4>{i18n.language === 'vi' ? 'Công ty' : 'Company'}</h4>
+            <h4>{i18n.language === 'vi' ? 'Cá nhân' : 'Personal'}</h4>
             <ul>
               <li><Link href="/about">{t('nav.about')}</Link></li>
               <li><Link href="/projects">{t('nav.projects')}</Link></li>

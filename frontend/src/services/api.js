@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useAuthStore } from '../store/authStore';
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || '/api',
@@ -7,35 +8,28 @@ const api = axios.create({
 
 // Inject JWT token to every request (prioritize based on request path)
 api.interceptors.request.use((config) => {
-  const adminToken = typeof window !== 'undefined' ? localStorage.getItem('thanhtdh_token') : null;
+  let adminToken = typeof window !== 'undefined' ? localStorage.getItem('thanhtdh_token') : null;
+  if (!adminToken || adminToken === 'undefined' || adminToken === 'null') {
+    try {
+      adminToken = useAuthStore.getState().token;
+    } catch (e) {}
+  }
+  if (adminToken === 'undefined' || adminToken === 'null') adminToken = null;
+
   const userRaw = typeof window !== 'undefined' ? localStorage.getItem('thanhtdh_user') : null;
   let userToken = null;
-  try { userToken = userRaw ? JSON.parse(userRaw)?.state?.token : null; } catch {}
+  try { 
+    userToken = userRaw ? JSON.parse(userRaw)?.state?.token : null; 
+    if (userToken === 'undefined' || userToken === 'null') userToken = null;
+  } catch {}
 
   const url = config.url || '';
-  const isUserRoute = 
-    url.includes('users') ||
-    url.includes('contact') ||
-    url.includes('quote') ||
-    url.includes('consult');
-
-  const token = isUserRoute ? (userToken || adminToken) : (adminToken || userToken);
+  const isAdminPage = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin');
+  
+  // If we are on an admin page or calling an admin API, strictly use adminToken to prevent sending userToken which would cause a 401 loop.
+  const token = (isAdminPage || url.includes('/admin/')) ? adminToken : (userToken || adminToken);
+  
   if (token) config.headers.Authorization = `Bearer ${token}`;
-
-  if (typeof window !== 'undefined' && url !== '/debug-log') {
-    window.fetch('/api/debug-log', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        type: 'request',
-        url,
-        isUserRoute,
-        userToken: userToken ? (userToken.substring(0, 15) + '...') : null,
-        adminToken: adminToken ? (adminToken.substring(0, 15) + '...') : null,
-        finalToken: token ? (token.substring(0, 15) + '...') : null
-      })
-    }).catch(() => {});
-  }
 
   return config;
 });
@@ -49,49 +43,32 @@ api.interceptors.response.use(
       const url = err.config?.url || '';
       const method = (err.config?.method || '').toLowerCase();
       
-      const isUserRoute = 
-        url.includes('users/me') ||
+      const isAuthAttempt = 
         url.includes('users/login') ||
         url.includes('users/register') ||
         url.includes('users/google') ||
         url.includes('users/facebook') ||
-        url.includes('users/change-password') ||
-        url.includes('users/history');
+        url.includes('auth/login');
 
-      const isUserAuthAttempt = 
-        url.includes('users/login') ||
-        url.includes('users/register') ||
-        url.includes('users/google') ||
-        url.includes('users/facebook');
-
-      if (isUserAuthAttempt) {
-        // Do not redirect anywhere when user login/register/google fails
+      if (isAuthAttempt) {
+        // Do not redirect anywhere when login/register fails (allow error message to show)
         return Promise.reject(err);
       }
 
-      const isAdminRequest = 
-        url.includes('/admin') ||
-        url.includes('/auth') ||
-        url.includes('/all') ||
-        url.includes('/upload') ||
-        (url.includes('users') && !isUserRoute) ||
-        (url.includes('contact') && method === 'get') ||
-        ((method === 'post' || method === 'put' || method === 'delete') &&
-         (url.includes('banners') ||
-          url.includes('services') ||
-          url.includes('projects') ||
-          url.includes('products') ||
-          url.includes('courses') ||
-          url.includes('partners') ||
-          url.includes('company')));
+      const isAdminPage = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin');
 
-      if (isUserRoute && !isUserAuthAttempt) {
+      if (isAdminPage) {
+        console.error('API 401/403 on admin page. URL:', url, 'Method:', method);
+        // Do not kick out for non-admin API routes (like public company data)
+        if (!url.includes('/company')) {
+          localStorage.removeItem('thanhtdh_token');
+          localStorage.removeItem('thanhtdh_admin');
+          localStorage.removeItem('thanhtdh_auth'); // Force Zustand to reset admin auth state
+          window.location.href = '/admin/login';
+        }
+      } else {
         localStorage.removeItem('thanhtdh_user');
         window.location.href = '/login';
-      } else if (isAdminRequest) {
-        localStorage.removeItem('thanhtdh_token');
-        localStorage.removeItem('thanhtdh_admin');
-        window.location.href = '/admin/login';
       }
     }
     return Promise.reject(err);
@@ -174,31 +151,8 @@ export const userLogin = (data) => api.post('/users/login', data).then(r => r.da
 export const userGoogleLogin = (data) => api.post('/users/google', typeof data === 'string' ? { token: data } : data).then(r => r.data);
 export const userFacebookLogin = (accessToken) => api.post('/users/facebook', { accessToken }).then(r => r.data);
 export const getUserMe = () => {
-  if (typeof window !== 'undefined') {
-    window.fetch('/api/debug-log', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'getUserMe_start' })
-    }).catch(() => {});
-  }
   return api.get('/users/me').then(r => {
-    if (typeof window !== 'undefined') {
-      window.fetch('/api/debug-log', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'getUserMe_success', user: r.data?.user })
-      }).catch(() => {});
-    }
     return r.data.user;
-  }).catch(err => {
-    if (typeof window !== 'undefined') {
-      window.fetch('/api/debug-log', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'getUserMe_error', message: err.message, status: err.response?.status, data: err.response?.data })
-      }).catch(() => {});
-    }
-    throw err;
   });
 };
 export const updateUserMe = (data) => api.put('/users/me', data).then(r => r.data);
