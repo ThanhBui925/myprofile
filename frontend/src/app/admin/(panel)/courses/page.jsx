@@ -164,9 +164,9 @@ export default function AdminCourses() {
   const [modal, setModal] = useState(null);
   const { data: courses = [], isLoading } = useQuery({ queryKey: ['admin-courses'], queryFn: adminGetCourses });
   const invalidate = () => qc.invalidateQueries({ queryKey: ['admin-courses'] });
-  const createMut = useMutation({ mutationFn: adminCreateCourse, onSuccess: () => { toast.success('Đã thêm!'); invalidate(); setModal(null); } });
-  const updateMut = useMutation({ mutationFn: ({ id, data }) => adminUpdateCourse(id, data), onSuccess: () => { toast.success('Đã cập nhật!'); invalidate(); setModal(null); } });
-  const deleteMut = useMutation({ mutationFn: adminDeleteCourse, onSuccess: () => { toast.success('Đã xoá!'); invalidate(); } });
+  const createMut = useMutation({ mutationFn: adminCreateCourse, onSuccess: () => { toast.success('Đã thêm!'); invalidate(); setModal(null); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi thêm tài liệu'); } });
+  const updateMut = useMutation({ mutationFn: ({ id, data }) => adminUpdateCourse(id, data), onSuccess: () => { toast.success('Đã cập nhật!'); invalidate(); setModal(null); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi cập nhật tài liệu'); } });
+  const deleteMut = useMutation({ mutationFn: adminDeleteCourse, onSuccess: () => { toast.success('Đã xoá!'); invalidate(); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi xoá tài liệu'); } });
   const handleSave = (data) => { if (modal?._id) updateMut.mutate({ id: modal._id, data }); else createMut.mutate(data); };
 
   return (

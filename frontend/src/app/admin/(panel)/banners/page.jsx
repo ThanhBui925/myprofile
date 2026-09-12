@@ -49,9 +49,9 @@ export default function AdminBanners() {
 
   const invalidate = () => qc.invalidateQueries({ queryKey: ['admin-banners'] });
 
-  const createMut = useMutation({ mutationFn: adminCreateBanner, onSuccess: () => { toast.success('Đã thêm banner!'); invalidate(); setModal(null); } });
-  const updateMut = useMutation({ mutationFn: ({ id, data }) => adminUpdateBanner(id, data), onSuccess: () => { toast.success('Đã cập nhật!'); invalidate(); setModal(null); } });
-  const deleteMut = useMutation({ mutationFn: adminDeleteBanner, onSuccess: () => { toast.success('Đã xoá!'); invalidate(); } });
+  const createMut = useMutation({ mutationFn: adminCreateBanner, onSuccess: () => { toast.success('Đã thêm banner!'); invalidate(); setModal(null); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi thêm banner'); } });
+  const updateMut = useMutation({ mutationFn: ({ id, data }) => adminUpdateBanner(id, data), onSuccess: () => { toast.success('Đã cập nhật!'); invalidate(); setModal(null); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi cập nhật banner'); } });
+  const deleteMut = useMutation({ mutationFn: adminDeleteBanner, onSuccess: () => { toast.success('Đã xoá!'); invalidate(); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi xoá banner'); } });
 
   const handleSave = (data) => {
     if (modal?._id) updateMut.mutate({ id: modal._id, data });

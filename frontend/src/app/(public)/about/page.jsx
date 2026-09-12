@@ -38,7 +38,7 @@ export default function AboutPage() {
         <h1 style={{ background: 'linear-gradient(135deg, #fff, #FFB380)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', marginBottom: '1rem' }}>
           {lang === 'vi' ? `Về ${appName}` : `About ${appName}`}
         </h1>
-        <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem', maxWidth: 600, margin: '0 auto', whiteSpace: 'pre-line' }}>
+        <p style={{ color: 'rgba(255,255,255,0.92)', fontSize: '1.1rem', maxWidth: 600, margin: '0 auto', whiteSpace: 'pre-line', textShadow: '0 1px 8px rgba(0,0,0,0.7)' }}>
           {lang === 'vi' ? company?.aboutVi : company?.aboutEn}
         </p>
       </SubPageHero3D>

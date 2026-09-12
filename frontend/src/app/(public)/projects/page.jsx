@@ -37,7 +37,7 @@ export default function ProjectsPage() {
     <div>
       <SubPageHero3D>
         <h1 style={{ fontFamily: 'var(--font-heading)', marginBottom: '0.5rem', color: '#fff' }}>{t('projects.title')}</h1>
-        <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem' }}>{lang === 'vi' ? `Các dự án tự động hóa tiêu biểu ${appName} đã triển khai` : `Featured automation projects implemented by ${appName}`}</p>
+        <p style={{ color: 'rgba(255,255,255,0.92)', fontSize: '1.1rem', textShadow: '0 1px 8px rgba(0,0,0,0.7)' }}>{lang === 'vi' ? `Các dự án tự động hóa tiêu biểu ${appName} đã triển khai` : `Featured automation projects implemented by ${appName}`}</p>
       </SubPageHero3D>
 
       <div className="section">

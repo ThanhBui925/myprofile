@@ -128,9 +128,9 @@ export default function AdminProducts() {
   const [modal, setModal] = useState(null);
   const { data: products = [], isLoading } = useQuery({ queryKey: ['admin-products'], queryFn: adminGetProducts });
   const invalidate = () => qc.invalidateQueries({ queryKey: ['admin-products'] });
-  const createMut = useMutation({ mutationFn: adminCreateProduct, onSuccess: () => { toast.success('Đã thêm!'); invalidate(); setModal(null); } });
-  const updateMut = useMutation({ mutationFn: ({ id, data }) => adminUpdateProduct(id, data), onSuccess: () => { toast.success('Đã cập nhật!'); invalidate(); setModal(null); } });
-  const deleteMut = useMutation({ mutationFn: adminDeleteProduct, onSuccess: () => { toast.success('Đã xoá!'); invalidate(); } });
+  const createMut = useMutation({ mutationFn: adminCreateProduct, onSuccess: () => { toast.success('Đã thêm!'); invalidate(); setModal(null); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi thêm sản phẩm'); } });
+  const updateMut = useMutation({ mutationFn: ({ id, data }) => adminUpdateProduct(id, data), onSuccess: () => { toast.success('Đã cập nhật!'); invalidate(); setModal(null); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi cập nhật sản phẩm'); } });
+  const deleteMut = useMutation({ mutationFn: adminDeleteProduct, onSuccess: () => { toast.success('Đã xoá!'); invalidate(); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi xoá sản phẩm'); } });
   const handleSave = (data) => { if (modal?._id) updateMut.mutate({ id: modal._id, data }); else createMut.mutate(data); };
 
   return (

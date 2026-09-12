@@ -72,9 +72,9 @@ export default function AdminPartners() {
   const [modal, setModal] = useState(null);
   const { data: partners = [], isLoading } = useQuery({ queryKey: ['admin-partners'], queryFn: adminGetPartners });
   const invalidate = () => qc.invalidateQueries({ queryKey: ['admin-partners'] });
-  const createMut = useMutation({ mutationFn: adminCreatePartner, onSuccess: () => { toast.success('Đã thêm!'); invalidate(); setModal(null); } });
-  const updateMut = useMutation({ mutationFn: ({ id, data }) => adminUpdatePartner(id, data), onSuccess: () => { toast.success('Đã cập nhật!'); invalidate(); setModal(null); } });
-  const deleteMut = useMutation({ mutationFn: adminDeletePartner, onSuccess: () => { toast.success('Đã xoá!'); invalidate(); } });
+  const createMut = useMutation({ mutationFn: adminCreatePartner, onSuccess: () => { toast.success('Đã thêm!'); invalidate(); setModal(null); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi thêm đối tác'); } });
+  const updateMut = useMutation({ mutationFn: ({ id, data }) => adminUpdatePartner(id, data), onSuccess: () => { toast.success('Đã cập nhật!'); invalidate(); setModal(null); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi cập nhật đối tác'); } });
+  const deleteMut = useMutation({ mutationFn: adminDeletePartner, onSuccess: () => { toast.success('Đã xoá!'); invalidate(); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi xoá đối tác'); } });
   const handleSave = (data) => { if (modal?._id) updateMut.mutate({ id: modal._id, data }); else createMut.mutate(data); };
 
   return (

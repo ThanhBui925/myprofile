@@ -46,7 +46,7 @@ export default function ContactPage() {
         <h1 style={{ background: 'linear-gradient(135deg, #fff, #FFB380)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', marginBottom: '1rem' }}>
           {t('contact.title')}
         </h1>
-        <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem' }}>{t('contact.sub')}</p>
+        <p style={{ color: 'rgba(255,255,255,0.92)', fontSize: '1.1rem', textShadow: '0 1px 8px rgba(0,0,0,0.7)' }}>{t('contact.sub')}</p>
       </SubPageHero3D>
 
       <div className="section">

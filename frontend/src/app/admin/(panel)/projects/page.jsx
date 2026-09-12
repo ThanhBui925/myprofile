@@ -124,9 +124,9 @@ export default function AdminProjects() {
   const [modal, setModal] = useState(null);
   const { data: projects = [], isLoading } = useQuery({ queryKey: ['admin-projects'], queryFn: adminGetProjects });
   const invalidate = () => qc.invalidateQueries({ queryKey: ['admin-projects'] });
-  const createMut = useMutation({ mutationFn: adminCreateProject, onSuccess: () => { toast.success('Đã thêm!'); invalidate(); setModal(null); } });
-  const updateMut = useMutation({ mutationFn: ({ id, data }) => adminUpdateProject(id, data), onSuccess: () => { toast.success('Đã cập nhật!'); invalidate(); setModal(null); } });
-  const deleteMut = useMutation({ mutationFn: adminDeleteProject, onSuccess: () => { toast.success('Đã xoá!'); invalidate(); } });
+  const createMut = useMutation({ mutationFn: adminCreateProject, onSuccess: () => { toast.success('Đã thêm!'); invalidate(); setModal(null); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi thêm dự án'); } });
+  const updateMut = useMutation({ mutationFn: ({ id, data }) => adminUpdateProject(id, data), onSuccess: () => { toast.success('Đã cập nhật!'); invalidate(); setModal(null); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi cập nhật dự án'); } });
+  const deleteMut = useMutation({ mutationFn: adminDeleteProject, onSuccess: () => { toast.success('Đã xoá!'); invalidate(); }, onError: (err) => { toast.error(err.response?.data?.message || 'Lỗi xoá dự án'); } });
   const handleSave = (data) => { if (modal?._id) updateMut.mutate({ id: modal._id, data }); else createMut.mutate(data); };
 
   return (
