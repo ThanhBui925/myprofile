@@ -21,8 +21,13 @@ export default function Navbar() {
   const router = useRouter();
   const { user, isAuthenticated, logout } = useUserStore();
   
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const { data: company } = useQuery({ queryKey: ['company'], queryFn: getCompany });
-  const appName = company ? (i18n.language === 'vi' ? company.nameVi : company.nameEn) : '';
+  const appName = company?.nameVi || company?.nameEn || 'THANHTDH';
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 120);
@@ -102,7 +107,7 @@ export default function Navbar() {
           </button>
 
           {/* User Auth Button */}
-          {isAuthenticated && user ? (
+          {mounted && isAuthenticated && user ? (
             <div ref={dropdownRef} style={{ position: 'relative' }}>
               <button
                 onClick={() => setUserDropdown(!userDropdown)}
@@ -163,14 +168,14 @@ export default function Navbar() {
           ) : (
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <Link href="/login" className="btn btn-ghost btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <LogIn size={14} /> {t('auth.login')}
+                <LogIn size={14} /> <span className="navbar__login-text">{t('auth.login')}</span>
               </Link>
-              <Link href="/register" className="btn btn-primary btn-sm">{t('auth.register')}</Link>
+              <Link href="/register" className="btn btn-primary btn-sm navbar__register-btn">{t('auth.register')}</Link>
             </div>
           )}
 
           <button className="navbar__menu-btn" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
@@ -188,7 +193,7 @@ export default function Navbar() {
 
         {/* Mobile Auth */}
         <div style={{ padding: '0.75rem 1.5rem', borderTop: '1px solid var(--color-border-muted)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          {isAuthenticated ? (
+          {mounted && isAuthenticated ? (
             <>
               <Link href="/profile" className="navbar__mobile-link" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <User size={15} /> {user?.fullName}

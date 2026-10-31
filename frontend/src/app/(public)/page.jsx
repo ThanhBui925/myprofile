@@ -85,11 +85,17 @@ export default function HomePage() {
 
   const { data: banners = [] } = useQuery({ queryKey: ['banners'], queryFn: getBanners });
   const { data: services = [] } = useQuery({ queryKey: ['services'], queryFn: getServices });
-  const { data: featuredProjects = [] } = useQuery({
+  const { data: featuredProjects = [], isLoading: isLoadingFeatured } = useQuery({
     queryKey: ['projects', 'featured'],
     queryFn: () => getProjects({ featured: 'true', limit: 3 })
   });
-  const { data: allProjects = [] } = useQuery({ queryKey: ['projects', 'all'], queryFn: () => getProjects() });
+  const { data: allProjects = [], isLoading: isLoadingAll } = useQuery({ 
+    queryKey: ['projects', 'all'], 
+    queryFn: () => getProjects() 
+  });
+  
+  const displayedProjects = featuredProjects.length > 0 ? featuredProjects : allProjects.slice(0, 3);
+  const showSkeleton = isLoadingFeatured || (featuredProjects.length === 0 && isLoadingAll);
   const { data: featuredProducts = [] } = useQuery({ queryKey: ['products', 'featured'], queryFn: () => getProducts() });
   const { data: partners = [] } = useQuery({ queryKey: ['partners'], queryFn: getPartners });
 
@@ -102,7 +108,9 @@ export default function HomePage() {
     }
   });
 
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
+    setMounted(true);
     if (user) {
       reset({ name: user.fullName || user.name || '', email: user.email || '', phone: user.phone || '' });
     }
@@ -179,12 +187,12 @@ export default function HomePage() {
             <h2 className="section-title">{t('home.projects_title')}</h2>
           </div>
           <div className="grid-3">
-            {featuredProjects.length === 0 && [1,2,3].map(i => (
+            {showSkeleton && [1,2,3].map(i => (
               <div key={i} className="card" style={{ aspectRatio: '4/3' }}>
                 <div className="skeleton" style={{ height: '100%' }} />
               </div>
             ))}
-            {featuredProjects.map((project, i) => (
+            {!showSkeleton && displayedProjects.map((project, i) => (
               <motion.div
                 key={project._id}
                 initial={{ opacity: 0, y: 30 }}
@@ -219,6 +227,11 @@ export default function HomePage() {
                 </Link>
               </motion.div>
             ))}
+            {!showSkeleton && displayedProjects.length === 0 && (
+              <p style={{ gridColumn: '1/-1', textAlign: 'center', color: 'var(--color-text-muted)', padding: '3rem 0' }}>
+                {lang === 'vi' ? 'Chưa có dự án nào' : 'No projects found'}
+              </p>
+            )}
           </div>
           <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
             <Link href="/projects" className="btn btn-outline">
@@ -320,7 +333,9 @@ export default function HomePage() {
               </div>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-              {user ? (
+              {(!mounted) ? (
+                <div style={{ height: 400, background: 'var(--color-surface)', borderRadius: 'var(--radius-xl)' }} />
+              ) : user ? (
                 <form
                   onSubmit={handleSubmit(data => mutation.mutate(data))}
                   style={{

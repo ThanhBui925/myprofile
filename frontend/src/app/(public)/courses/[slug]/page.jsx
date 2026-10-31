@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 
-export default function CourseSlugRedirect() {
+function CourseRedirectContent() {
   const router = useRouter();
   const { slug } = useParams();
   const searchParams = useSearchParams();
@@ -14,4 +14,12 @@ export default function CourseSlugRedirect() {
   }, [router, slug, searchParams]);
 
   return null;
+}
+
+export default function CourseSlugRedirect() {
+  return (
+    <Suspense fallback={null}>
+      <CourseRedirectContent />
+    </Suspense>
+  );
 }

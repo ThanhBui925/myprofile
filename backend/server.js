@@ -9,7 +9,7 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: function(origin, callback) {
-    const allowed = [process.env.CLIENT_URL, 'http://localhost:5173', 'http://localhost:3000'];
+    const allowed = [process.env.CLIENT_URL];
     if (!origin || allowed.includes(origin)) return callback(null, true);
     callback(null, true); // Allow all during dev to avoid issues
   },
@@ -35,11 +35,6 @@ const fs = require('fs');
 // Static files for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes
-app.post('/api/debug-log', (req, res) => {
-  console.log('[CLIENT DEBUG]', req.body);
-  res.sendStatus(200);
-});
 app.use('/api/auth', require('./src/routes/auth'));
 app.use('/api/banners', require('./src/routes/banners'));
 app.use('/api/services', require('./src/routes/services'));
@@ -67,7 +62,7 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('✅ MongoDB connected');
     app.listen(PORT, () => {
-      console.log(`🚀 ${process.env.APP_NAME || 'THANHTDH'} API running on http://localhost:${PORT}`);
+      console.log(`🚀 ${process.env.APP_NAME || 'THANHTDH'} API running on port ${PORT}`);
     });
   })
   .catch(err => {

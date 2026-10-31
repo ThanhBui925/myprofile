@@ -7,6 +7,7 @@ const Project = require('../models/Project');
 const Product = require('../models/Product');
 const Banner = require('../models/Banner');
 const Partner = require('../models/Partner');
+const bcrypt = require('bcryptjs');
 
 const seed = async () => {
   await mongoose.connect(process.env.MONGODB_URI);

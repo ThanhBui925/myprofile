@@ -79,7 +79,7 @@ export default function ProductDetailPage() {
                   <Send size={16} /> {t('products.quote')}
                 </button>
                 {product.catalogUrl && (
-                  <a href={`/uploads/catalogs/${product.catalogUrl}`} download className="btn btn-outline btn-lg">
+                  <a href={product.catalogUrl.startsWith('http') ? product.catalogUrl : `/uploads/catalogs/${product.catalogUrl}`} target="_blank" rel="noreferrer" download className="btn btn-outline btn-lg">
                     <Download size={16} /> {t('products.download')}
                   </a>
                 )}

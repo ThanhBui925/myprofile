@@ -65,16 +65,18 @@ function ContactDetailModal({ contact, onClose, onStatusChange }) {
           <p style={{ color: '#fff', fontSize: '0.95rem', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{contact.message}</p>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', fontWeight: 600, alignSelf: 'center', marginRight: '0.25rem' }}>Cập nhật trạng thái:</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', fontWeight: 600 }}>Cập nhật trạng thái:</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem' }}>
           {Object.entries(STATUS_CONFIG).map(([key, val]) => (
             <button key={key} onClick={() => onStatusChange(key)}
               disabled={contact.status === key}
-              style={{ background: contact.status === key ? val.bg : 'var(--color-surface)', color: val.color, border: `1px solid ${val.border}`, borderRadius: 'var(--radius-md)', padding: '0.4rem 0.875rem', fontSize: '0.8rem', fontWeight: 600, cursor: contact.status === key ? 'default' : 'pointer', opacity: contact.status === key ? 1 : 0.7, transition: 'all 0.2s' }}>
+              style={{ background: contact.status === key ? val.bg : 'var(--color-surface)', color: val.color, border: `1px solid ${val.border}`, borderRadius: 'var(--radius-md)', padding: '0.5rem', whiteSpace: 'nowrap', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '0.8rem', fontWeight: 600, cursor: contact.status === key ? 'default' : 'pointer', opacity: contact.status === key ? 1 : 0.7, transition: 'all 0.2s' }}>
               {val.label}
             </button>
           ))}
         </div>
+      </div>
       </motion.div>
     </div>
   );
@@ -111,7 +113,7 @@ export default function AdminContacts() {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
             <h1 style={{ fontFamily: 'var(--font-heading)', color: '#fff' }}>Hòm thư Liên hệ</h1>
